@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -23,11 +24,14 @@ public class PlayerController : MonoBehaviour
     public bool isGrounded {get; private set;}
     public bool isJumping {get; private set;}
     public bool isFalling {get; private set;}
+    public bool isHurted {get; private set;}
     public bool isRunning => Mathf.Abs(velocity.x) > 0.25f || Mathf.Abs(inputAxis) > 0.25f;
     public bool isSliding => (inputAxis > 0 && velocity.x < 0) || (inputAxis < 0 && velocity.x > 0);
     // Phanh
     private float inputAxis;
     private Vector2 velocity;
+    public float blinkDuration = 0.1f; // Thời gian mỗi lần nhấp nháy
+    public int blinkCount = 5; // Số lần nhấp nháy
     private void Awake()
     {
         initialState = GetComponent<Idle>();
@@ -56,6 +60,7 @@ public class PlayerController : MonoBehaviour
         if (context != null)
         {
             context.StateUpdate();
+            Debug.Log(context.currentState);
         }
 
     }
@@ -99,18 +104,51 @@ public class PlayerController : MonoBehaviour
     }
 
     private void FixedUpdate()
-{
+    {
+        Vector2 leftEdge = camera.ScreenToWorldPoint(Vector2.zero);
+        Vector2 rightEdge = camera.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
 
-    Vector2 leftEdge = camera.ScreenToWorldPoint(Vector2.zero);
-    Vector2 rightEdge = camera.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
+        velocity.y = Mathf.Clamp(velocity.y, gravity / 2f, jumpForce); // Clamp giá trị trục Y
 
-    velocity.y = Mathf.Clamp(velocity.y, gravity / 2f, jumpForce); // Clamp giá trị trục Y
-    rigidbody2D.linearVelocity = velocity; // Gán vận tốc trực tiếp cho Rigidbody
+        rigidbody2D.linearVelocity = velocity;
 
-    // Giới hạn vị trí X trong biên màn hình
-    Vector2 position = rigidbody2D.position;
-    position.x = Mathf.Clamp(position.x, leftEdge.x + 0.5f, rightEdge.x - 0.5f);
-    rigidbody2D.position = position; // Gán lại vị trí đã giới hạn
-}
+        // Giới hạn vị trí X trong biên màn hình
+        Vector2 position = rigidbody2D.position;
+        position.x = Mathf.Clamp(position.x, leftEdge.x + 0.5f, rightEdge.x - 0.5f);
+        rigidbody2D.position = position; 
+    }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            isHurted = true;
+            StartCoroutine(BlinkEffect());
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision) {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            isHurted = false;
+        }
+    }
+
+    private IEnumerator BlinkEffect()
+    {
+        // Tiếp tục nhấp nháy khi isHurted là true
+        while (isHurted)
+        {
+            // Thay đổi màu thành đỏ
+            spriteRenderer.color = Color.red;
+            yield return new WaitForSeconds(blinkDuration);
+        
+            // Trả lại màu ban đầu
+            spriteRenderer.color = Color.white;
+            yield return new WaitForSeconds(blinkDuration);
+        } 
+
+        // Sau khi nhấp nháy xong, đảm bảo màu trở về trắng
+        spriteRenderer.color = Color.white;
+    }
 }
