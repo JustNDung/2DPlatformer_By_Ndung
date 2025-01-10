@@ -4,7 +4,6 @@ public class Shoot : State
 {
     public override void Enter()
     {
-        Debug.Log("Entering Shoot State");
         context.animator.SetBool("isShooting", true);  
         Shooting(); 
     }
@@ -25,13 +24,10 @@ public class Shoot : State
     public override void Exit()
     {
         context.animator.SetBool("isShooting", false);
-        Debug.Log("Exiting Shoot State");
     }
 
     private void Shooting()
     {
-        Debug.Log("Shooting a projectile!");
-        // Triển khai logic bắn, ví dụ:
-        // Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+        
     }
 }

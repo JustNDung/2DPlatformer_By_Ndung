@@ -57,7 +57,7 @@ public class Context : MonoBehaviour
         } 
         else
         {
-            Debug.Log("Current State: NULL");
+            throw new System.Exception("Current State is null");
         }
     }
 }

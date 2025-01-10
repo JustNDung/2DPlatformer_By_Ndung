@@ -14,8 +14,7 @@ public class SlideScrolling : MonoBehaviour
     private void LateUpdate()
     {
         Vector3 cameraPos = transform.position;
-        cameraPos.x = Mathf.Max(cameraPos.x, player.position.x);
-        //cameraPos.x = player.position.x;
+        cameraPos.x = player.position.x;
         transform.position = cameraPos;
     }
 
