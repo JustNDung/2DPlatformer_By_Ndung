@@ -44,7 +44,6 @@ public class PlayerController : MonoBehaviour
         collider2D = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         camera = Camera.main;
-
     }
 
     private void Update()

@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Shoot : State
 {
+    [SerializeField] private BulletSpawner bulletSpawner;
+    private Vector2 bulletDirection;
     public override void Enter()
     {
         context.animator.SetBool("isShooting", true);  
@@ -28,6 +30,11 @@ public class Shoot : State
 
     private void Shooting()
     {
-        
+        if (context.playerController.transform.rotation.y == 0) {
+            bulletDirection = Vector2.right;
+        } else {
+            bulletDirection = Vector2.left;
+        }
+        bulletSpawner.SpawnBullet(bulletSpawner.transform.position, bulletDirection);
     }
 }
