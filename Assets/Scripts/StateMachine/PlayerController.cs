@@ -32,6 +32,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 velocity;
     public float blinkDuration = 0.1f; // Thời gian mỗi lần nhấp nháy
     public int blinkCount = 5; // Số lần nhấp nháy
+    private float checkCollideDistanceWithObject = 1.4f;
+    private float checkCollideDistanceWithEntity = 0.6f;
     private void Awake()
     {
         initialState = GetComponent<Idle>();
@@ -49,7 +51,7 @@ public class PlayerController : MonoBehaviour
     {
         HorizontalMovement();
 
-        isGrounded = rigidbody2D.Raycast(Vector2.down, LayerMask.GetMask("Ground"));
+        isGrounded = rigidbody2D.Raycast(Vector2.down, checkCollideDistanceWithObject, LayerMask.GetMask("Ground", "Obstacle"));
 
         if (isGrounded)
         {
@@ -61,6 +63,15 @@ public class PlayerController : MonoBehaviour
         {
             context.StateUpdate();
             Debug.Log(context.currentState);
+        }
+
+        isHurted = rigidbody2D.Raycast(
+            Vector2.right, checkCollideDistanceWithEntity, LayerMask.GetMask("Enemy")
+        ) || rigidbody2D.Raycast(
+            Vector2.left, checkCollideDistanceWithEntity, LayerMask.GetMask("Enemy")
+        );
+        if (isHurted) {
+            StartCoroutine(HurtedEffect());
         }
 
     }
@@ -118,23 +129,7 @@ public class PlayerController : MonoBehaviour
         rigidbody2D.position = position; 
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-        {
-            isHurted = true;
-            StartCoroutine(BlinkEffect());
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision) {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-        {
-            isHurted = false;
-        }
-    }
-
-    private IEnumerator BlinkEffect()
+    private IEnumerator HurtedEffect()
     {
         // Tiếp tục nhấp nháy khi isHurted là true
         while (isHurted)
@@ -151,4 +146,5 @@ public class PlayerController : MonoBehaviour
         // Sau khi nhấp nháy xong, đảm bảo màu trở về trắng
         spriteRenderer.color = Color.white;
     }
+
 }
