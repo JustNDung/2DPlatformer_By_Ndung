@@ -12,7 +12,7 @@ TagManager:
   - Water
   - UI
   - 
-  - 
+  - Obstacle
   - Enemy
   - Player
   - Tree
@@ -46,6 +46,9 @@ TagManager:
     locked: 0
   - name: Ground
     uniqueID: 325664359
+    locked: 0
+  - name: Obstacle
+    uniqueID: 2899562679
     locked: 0
   - name: Tree
     uniqueID: 124863671
