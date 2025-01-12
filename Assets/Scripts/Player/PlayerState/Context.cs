@@ -16,11 +16,10 @@ public class Context : MonoBehaviour
     public Slide slide;
     public Spin spin;
     public PlayerController playerController;
-
     private void Awake() {
         animator = GetComponent<Animator>();
-
         rb = GetComponent<Rigidbody2D>();
+
         duck = GetComponent<Duck>();
         fall = GetComponent<Fall>();
         hurt = GetComponent<Hurt>();
@@ -35,7 +34,6 @@ public class Context : MonoBehaviour
 
         playerController = GetComponent<PlayerController>();
     }
-    
     public void ChangeState(State newState)
     {
         if (currentState != null)

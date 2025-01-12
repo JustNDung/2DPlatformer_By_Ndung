@@ -6,7 +6,6 @@ public class Idle : State
     {
 
     }
-
     public override void HandleInput()
     {
 
@@ -31,12 +30,10 @@ public class Idle : State
             context.ChangeState(context.slide);
         }   
     }
-
     public override void LogicUpdate()
     {
         // Logic Idle
     }
-
     public override void Exit()
     {
 
