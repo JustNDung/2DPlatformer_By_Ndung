@@ -37,7 +37,7 @@ public class SlimeBehavior : MonoBehaviour, IDamageable
         Destroy(gameObject);
     }
 
-    public void TakeDamage() {
+    public void TakeDamage(float damage) {
         
     }
     
