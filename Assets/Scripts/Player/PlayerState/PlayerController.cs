@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamageable
 {
     private Context context;
     private Idle initialState;
@@ -34,6 +34,8 @@ public class PlayerController : MonoBehaviour
     public int blinkCount = 5; // Số lần nhấp nháy
     private float checkCollideDistanceWithObject = 1.4f;
     private float checkCollideDistanceWithEntity = 0.6f;
+    public float maxHP {get; private set;}
+    public float currentHP {get; private set;}
     private void Awake()
     {
         initialState = GetComponent<Idle>();
@@ -64,14 +66,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log(context.currentState);
         }
 
-        isHurted = rigidbody2D.Raycast(
-            Vector2.right, checkCollideDistanceWithEntity, LayerMask.GetMask("Enemy")
-        ) || rigidbody2D.Raycast(
-            Vector2.left, checkCollideDistanceWithEntity, LayerMask.GetMask("Enemy")
-        );
-        if (isHurted) {
-            StartCoroutine(HurtedEffect());
-        }
+        TakeDamage();
 
     }
 
@@ -144,6 +139,21 @@ public class PlayerController : MonoBehaviour
 
         // Sau khi nhấp nháy xong, đảm bảo màu trở về trắng
         spriteRenderer.color = Color.white;
+    }
+
+    public void TakeDamage() {
+        isHurted = rigidbody2D.Raycast(
+            Vector2.right, checkCollideDistanceWithEntity, LayerMask.GetMask("Enemy")
+        ) || rigidbody2D.Raycast(
+            Vector2.left, checkCollideDistanceWithEntity, LayerMask.GetMask("Enemy")
+        );
+        if (isHurted) {
+            StartCoroutine(HurtedEffect());
+        }
+    }
+    public void SetInitialHP(float hp) {
+        maxHP = hp;
+        currentHP = hp;
     }
 
 }
