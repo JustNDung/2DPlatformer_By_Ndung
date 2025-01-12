@@ -11,10 +11,10 @@ TagManager:
   - 
   - Water
   - UI
-  - 
   - Obstacle
   - Enemy
   - Player
+  - Bullet
   - Tree
   - Ground
   - Background
@@ -55,6 +55,9 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 1174052871
+    locked: 0
+  - name: Bullet
+    uniqueID: 649850623
     locked: 0
   m_RenderingLayers:
   - Default

@@ -6,8 +6,6 @@ public class SlimeBehavior : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
-    [SerializeField] private LayerMask playerLayer; // Layer của Player
-
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();

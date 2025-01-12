@@ -4,10 +4,13 @@ public class Bullet : MonoBehaviour
 {
     private GenericObjectPool<Bullet> pool;
     private Rigidbody2D rb;
+    private Animator animator;
+
+    private bool isHit = false;
 
     private void Awake()
     {
-        // Lấy thành phần Rigidbody2D
+        animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
     }
@@ -19,33 +22,57 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Xử lý logic va chạm ở đây (ví dụ: gây sát thương)
+        // Xử lý logic va chạm
+        if (!isHit)
+        {
+            isHit = true;
+            rb.linearVelocity = Vector2.zero;
+            animator.SetTrigger("Hit");
+        }
+    }
 
-        // Trả lại đạn về Pool
-        ReturnToPool();
+    private void Update()
+    {
+        // Kiểm tra nếu animation "Hit" đã kết thúc
+        if (isHit && IsAnimationComplete("Bullet_Hit_Animation"))
+        {
+            ReturnToPool();
+        }
     }
 
     public void ReturnToPool()
     {
-        // Dừng mọi chuyển động của đạn
+        // Đặt lại trạng thái
+        isHit = false;
         rb.linearVelocity = Vector2.zero;
+        gameObject.SetActive(false);
         pool.Return(this);
     }
 
     public void Launch(Vector2 direction, float speed)
     {
-        // Đặt lại vận tốc của Rigidbody2D để bắn đạn
-        if (direction == Vector2.right) {
+        // Đặt lại trạng thái khi bắn
+        isHit = false;
+        if (direction == Vector2.right)
+        {
             transform.eulerAngles = Vector3.zero;
-        } else {
+        }
+        else
+        {
             transform.eulerAngles = new Vector3(0, 180, 0);
         }
         rb.linearVelocity = direction * speed;
     }
 
+    private bool IsAnimationComplete(string animationName)
+    {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        return stateInfo.IsName(animationName) && stateInfo.normalizedTime >= 1f;
+    }
+
     private void OnDisable()
     {
-        // Reset trạng thái nếu cần trước khi trả về Pool
+        // Reset trạng thái khi bị tắt
         rb.linearVelocity = Vector2.zero;
     }
 }
