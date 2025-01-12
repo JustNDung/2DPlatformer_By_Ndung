@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             Debug.Log(context.currentState);
         }
 
-        TakeDamage();
+        //TakeDamage();
 
     }
 
@@ -141,7 +141,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         spriteRenderer.color = Color.white;
     }
 
-    public void TakeDamage() {
+    public void TakeDamage(float damage) {
         isHurted = rigidbody2D.Raycast(
             Vector2.right, checkCollideDistanceWithEntity, LayerMask.GetMask("Enemy")
         ) || rigidbody2D.Raycast(
