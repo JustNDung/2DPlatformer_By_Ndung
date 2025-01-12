@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class SlimeBehavior : MonoBehaviour
+public class SlimeBehavior : MonoBehaviour, IDamageable
 {
     private Rigidbody2D rb;
     private Animator animator;
@@ -37,6 +37,9 @@ public class SlimeBehavior : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void TakeDamage() {
+        
+    }
     
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -51,4 +54,5 @@ public class SlimeBehavior : MonoBehaviour
             }
         }
     }
+
 }
