@@ -8,12 +8,10 @@ public class Jump : State
     {
         context.animator.SetBool("isJumping", true);
     }
-
     public override void HandleInput()
     {
         
     }
-
     public override void LogicUpdate()
     {
         bool falling = context.playerController.isFalling;
@@ -21,10 +19,8 @@ public class Jump : State
             context.ChangeState(context.fall);
         }
     }
-
     public override void Exit()
     {
         context.animator.SetBool("isJumping", false);
     }
-    
 }

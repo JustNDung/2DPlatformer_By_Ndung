@@ -35,9 +35,12 @@ public class Bullet : MonoBehaviour
     public void Launch(Vector2 direction, float speed)
     {
         // Đặt lại vận tốc của Rigidbody2D để bắn đạn
-        
+        if (direction == Vector2.right) {
+            transform.eulerAngles = Vector3.zero;
+        } else {
+            transform.eulerAngles = new Vector3(0, 180, 0);
+        }
         rb.linearVelocity = direction * speed;
-        Debug.Log(direction.normalized);
     }
 
     private void OnDisable()

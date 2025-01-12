@@ -6,17 +6,14 @@ public class Fall : State
     {
         context.animator.SetBool("isFalling", true);
     }
-
     public override void Exit()
     {
         context.animator.SetBool("isFalling", false);
     }
-
     public override void HandleInput()
     {
         
     }
-
     public override void LogicUpdate()
     {
         if (context.playerController.isGrounded) {
