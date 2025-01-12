@@ -1,21 +1,21 @@
 using UnityEngine;
 using System.Collections;
 
-public class SlimeBehavior : MonoBehaviour, IDamageable
+public class SlimeBehavior : MonoBehaviour, IDamager, IDeathable
 {
     private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+
+    public float DamageAmount => 10f;
+    [SerializeField] float damageInterval = 0.5f;
+    private Coroutine damageCoroutine;
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
-
-    private void Update() {
-
-    }
-
+    
     private IEnumerator BlinkAndDestroy() {
 
         float blinkDuration = 1.5f; // Tổng thời gian nhấp nháy
@@ -37,8 +37,33 @@ public class SlimeBehavior : MonoBehaviour, IDamageable
         Destroy(gameObject);
     }
 
-    public void TakeDamage(float damage) {
-        
+    public void DealDamage(IDamageable target)
+    {
+        if (target != null)
+        {
+            PlayerController player = target as PlayerController;
+            if (player != null)
+            {
+                if (damageCoroutine == null)
+                {
+                    damageCoroutine = StartCoroutine(DealDamageOverTime(target));
+                }
+            }
+        }
+    }
+
+    private IEnumerator DealDamageOverTime(IDamageable target)
+    {
+        while (target != null)
+        {
+            target.TakeDamage(DamageAmount);
+            yield return new WaitForSeconds(damageInterval);
+        }
+    }
+
+    public void Death()
+    {
+        StartCoroutine(BlinkAndDestroy());
     }
     
     private void OnCollisionEnter2D(Collision2D collision)
@@ -50,8 +75,17 @@ public class SlimeBehavior : MonoBehaviour, IDamageable
 
             if (transform.DotTest(playerTransform, Vector2.up))
             {
-                StartCoroutine(BlinkAndDestroy());
+                Death();
             }
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && damageCoroutine != null)
+        {
+            StopCoroutine(damageCoroutine);
+            damageCoroutine = null;
         }
     }
 

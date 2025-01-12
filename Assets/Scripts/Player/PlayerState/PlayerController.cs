@@ -1,7 +1,8 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour, IDamageable
+public class PlayerController : MonoBehaviour, IDamageable, IDeathable
 {
     private Context context;
     private Idle initialState;
@@ -63,10 +64,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (context != null)
         {
             context.StateUpdate();
-            Debug.Log(context.currentState);
         }
-
-        //TakeDamage();
+        else
+        {
+            throw new Exception("Context is null");
+        }
 
     }
 
@@ -142,15 +144,74 @@ public class PlayerController : MonoBehaviour, IDamageable
     }
 
     public void TakeDamage(float damage) {
-        isHurted = rigidbody2D.Raycast(
-            Vector2.right, checkCollideDistanceWithEntity, LayerMask.GetMask("Enemy")
-        ) || rigidbody2D.Raycast(
-            Vector2.left, checkCollideDistanceWithEntity, LayerMask.GetMask("Enemy")
-        );
-        if (isHurted) {
-            StartCoroutine(HurtedEffect());
+        currentHP -= damage;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        IDamager damager = collision.gameObject.GetComponent<IDamager>();
+        IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+        IImuneToStomp imune = collision.gameObject.GetComponent<IImuneToStomp>();
+
+        if (damager != null)
+        {
+            if (imune != null)
+            {
+                Hurt(damager);
+            } 
+            else if (IsAboveTarget(collision))
+            {
+                Bounce();
+            }
+            else
+            {
+                Hurt(damager);
+            }
         }
     }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        IDamager damager = collision.gameObject.GetComponent<IDamager>();
+        if (damager != null)
+        {
+            isHurted = false;
+        }
+    }
+    
+    private bool IsAboveTarget(Collision2D collision)
+    {
+        // Kiểm tra Player có va chạm từ phía trên không
+        ContactPoint2D[] contacts = collision.contacts;
+        foreach (ContactPoint2D contact in contacts)
+        {
+            if (contact.normal.y > 0.5f) // Va chạm từ trên xuống
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void Hurt(IDamager damager)
+    {
+        damager.DealDamage(this);
+        isHurted = true;
+        StartCoroutine(HurtedEffect());
+    }
+
+    private void Bounce()
+    {
+        // Lực nảy lên khi tiêu diệt Enemy
+        rigidbody2D.linearVelocity = new Vector2(velocity.x, 10f);
+    }
+
+    public void Death()
+    {
+        currentHP = maxHP; 
+        GameManager.Instance.OnPlayerDeath();
+    }
+    
     public void SetInitialHP(float hp) {
         maxHP = hp;
         currentHP = hp;

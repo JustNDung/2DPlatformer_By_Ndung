@@ -6,11 +6,9 @@ public class BulletSpawner : MonoBehaviour
     [SerializeField] private int initialBulletCount = 10; // Số lượng đạn ban đầu
     [SerializeField] private float bulletSpeed = 10f;
     private GenericObjectPool<Bullet> bulletPool;
-    private PlayerController playerController;
     private void Start()
     {
         // Khởi tạo Object Pool cho đạn
-        playerController = GetComponentInParent<PlayerController>();
         bulletPool = new GenericObjectPool<Bullet>(bulletPrefab, initialBulletCount);
     }
 
