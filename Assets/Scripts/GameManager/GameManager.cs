@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement; // Import để quản lý Scene
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; } // Singleton Instance
+    public static GameManager Instance { get; private set; } 
 
     public PlayerController playerController; // Tham chiếu tới Player
     private float playerHP = 100f; // HP ban đầu của Player
@@ -25,6 +25,14 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         InitializePlayer();
+    }
+
+    private void Update()
+    {
+        if (playerController.currentHP <= 0)
+        {
+            playerController.Death();
+        }
     }
 
     private void InitializePlayer()

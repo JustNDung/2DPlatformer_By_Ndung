@@ -20,13 +20,16 @@ public class Bullet : MonoBehaviour
         this.pool = pool;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Xử lý logic va chạm
         if (!isHit)
         {
             isHit = true;
+            
             rb.linearVelocity = Vector2.zero;
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            GetComponent<Collider2D>().enabled = false;
+            
             animator.SetTrigger("Hit");
         }
     }
@@ -44,8 +47,12 @@ public class Bullet : MonoBehaviour
     {
         // Đặt lại trạng thái
         isHit = false;
-        rb.linearVelocity = Vector2.zero;
         gameObject.SetActive(false);
+
+        rb.linearVelocity = Vector2.zero;
+        GetComponent<Collider2D>().enabled = true;
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        
         pool.Return(this);
     }
 
