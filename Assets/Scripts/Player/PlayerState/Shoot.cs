@@ -20,7 +20,7 @@ public class Shoot : State
 
     public override void LogicUpdate()
     {
-        // Giữ trạng thái bắn nếu cần (ví dụ: bắn liên tục nếu giữ phím)
+        
     }
 
     public override void Exit()
@@ -28,7 +28,7 @@ public class Shoot : State
         context.animator.SetBool("isShooting", false);
     }
 
-    private void Shooting()
+    public void Shooting()
     {
         if (context.playerController.transform.rotation.y == 0) {
             bulletDirection = Vector2.right;

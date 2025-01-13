@@ -2,11 +2,14 @@ using UnityEngine;
 
 public class RunShoot : State
 {
+    private Vector2 bulletDirection;
+    [SerializeField] private BulletSpawner bulletSpawner;
 
     public override void Enter()
     {
         context.animator.SetBool("isRunning", true);
         context.animator.SetBool("isShooting", true);
+        Shooting();
     }
 
     public override void HandleInput()
@@ -19,7 +22,17 @@ public class RunShoot : State
 
     public override void LogicUpdate()
     {
-        // Logic vừa chạy vừa bắn
+        
+    }
+    
+    public void Shooting()
+    {
+        if (context.playerController.transform.rotation.y == 0) {
+            bulletDirection = Vector2.right;
+        } else {
+            bulletDirection = Vector2.left;
+        }
+        bulletSpawner.SpawnBullet(bulletSpawner.transform.position, bulletDirection);
     }
 
     public override void Exit()

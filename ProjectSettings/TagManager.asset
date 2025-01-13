@@ -15,7 +15,7 @@ TagManager:
   - Enemy
   - Player
   - Bullet
-  - Tree
+  - Decorator
   - Ground
   - Background
   - Akainu
@@ -50,8 +50,11 @@ TagManager:
   - name: Obstacle
     uniqueID: 2899562679
     locked: 0
-  - name: Tree
+  - name: Decorator
     uniqueID: 124863671
+    locked: 0
+  - name: Enemy
+    uniqueID: 2339833903
     locked: 0
   - name: Player
     uniqueID: 1174052871

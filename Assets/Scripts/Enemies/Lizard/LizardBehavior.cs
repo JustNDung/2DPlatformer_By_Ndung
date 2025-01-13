@@ -1,23 +1,52 @@
+
 using UnityEngine;
 using System.Collections;
-using System.Security.Cryptography.X509Certificates;
 
-public class SlimeBehavior : MonoBehaviour, IDamager, IDeathable, IDamageable
+public class LizardBehavior : MonoBehaviour, IDamageable, IDamager, IImuneToStomp, IDeathable
 {
-    private Rigidbody2D rb;
+    private Animator animator;
+    private Rigidbody2D rb2d;
     private SpriteRenderer spriteRenderer;
-    private Collider2D collider2D;
-    public float DamageAmount => 3f;
-    [SerializeField] float damageInterval = 0.5f;
-    [SerializeField] float maxHP = 5f;
-    private float currentHP;
     private Coroutine damageCoroutine;
-    
-    private void Awake() {
-        currentHP = maxHP;
+    private Collider2D collider2D;
+    [SerializeField] BulletSpawner bulletSpawner;
+    public float DamageAmount => 6f;
+    [SerializeField] float maxHP = 10f;
+    [SerializeField] float currentHP;
+    [SerializeField] float damageInterval = 0.5f;
+
+    private void Awake()
+    {
         collider2D = GetComponent<Collider2D>();
-        rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
+        rb2d = GetComponent<Rigidbody2D>();
+        currentHP = maxHP;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHP -= damage;
+    }
+
+    public void DealDamage(IDamageable target)
+    {
+        if (target != null)
+        {
+            PlayerController player = target as PlayerController;
+            if (player != null)
+            {
+                if (damageCoroutine == null)
+                {
+                    damageCoroutine = StartCoroutine(DealDamageOverTime(target));
+                }
+            }
+        }
+    }
+
+    private void ShootFireBall()
+    {
+        animator.SetTrigger("Hit");
     }
 
     private void Update()
@@ -26,6 +55,14 @@ public class SlimeBehavior : MonoBehaviour, IDamager, IDeathable, IDamageable
         {
             Death();
         }
+    }
+
+    public void Death()
+    {
+        rb2d.bodyType = RigidbodyType2D.Kinematic; 
+        rb2d.linearVelocity = Vector2.zero; 
+        collider2D.enabled = false;
+        StartCoroutine(BlinkAndDestroy());
     }
     
     private IEnumerator BlinkAndDestroy() {
@@ -49,54 +86,12 @@ public class SlimeBehavior : MonoBehaviour, IDamager, IDeathable, IDamageable
         Destroy(gameObject);
     }
 
-    public void TakeDamage(float damage)
-    {
-        currentHP -= damage;
-    }
-
-    public void DealDamage(IDamageable target)
-    {
-        if (target != null)
-        {
-            PlayerController player = target as PlayerController;
-            if (player != null)
-            {
-                if (damageCoroutine == null)
-                {
-                    damageCoroutine = StartCoroutine(DealDamageOverTime(target));
-                }
-            }
-        }
-    }
-
     private IEnumerator DealDamageOverTime(IDamageable target)
     {
         while (target != null)
         {
             target.TakeDamage(DamageAmount);
             yield return new WaitForSeconds(damageInterval);
-        }
-    }
-
-    public void Death()
-    {
-        rb.bodyType = RigidbodyType2D.Kinematic; 
-        rb.linearVelocity = Vector2.zero; 
-        collider2D.enabled = false;
-        StartCoroutine(BlinkAndDestroy());
-    }
-    
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        // Kiểm tra va chạm với Player
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Transform playerTransform = collision.gameObject.transform;
-
-            if (transform.DotTest(playerTransform, Vector2.up))
-            {
-                Death();
-            }
         }
     }
 
@@ -108,5 +103,5 @@ public class SlimeBehavior : MonoBehaviour, IDamager, IDeathable, IDamageable
             damageCoroutine = null;
         }
     }
-
+    
 }
