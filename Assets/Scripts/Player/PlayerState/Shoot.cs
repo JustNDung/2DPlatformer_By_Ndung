@@ -20,7 +20,7 @@ public class Shoot : State
 
     public override void LogicUpdate()
     {
-        // Giữ trạng thái bắn nếu cần (ví dụ: bắn liên tục nếu giữ phím)
+        
     }
 
     public override void Exit()

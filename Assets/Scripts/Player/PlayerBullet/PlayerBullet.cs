@@ -1,34 +1,22 @@
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class PlayerBullet : BulletBase
 {
-    private GenericObjectPool<Bullet> pool;
-    private Rigidbody2D rb;
-    private Animator animator;
-
-    private bool isHit = false;
-
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
-        rb.gravityScale = 0f;
-    }
-
-    public void SetPool(GenericObjectPool<Bullet> pool)
-    {
-        this.pool = pool;
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!isHit)
         {
+            IDamageable target = collision.GetComponent<IDamageable>();
+            if (target != null)
+            {
+                DealDamage(target);
+            }
             isHit = true;
             
             rb.linearVelocity = Vector2.zero;
             rb.bodyType = RigidbodyType2D.Kinematic;
-            GetComponent<Collider2D>().enabled = false;
+            collider.enabled = false;
             
             animator.SetTrigger("Hit");
         }
@@ -43,22 +31,8 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    public void ReturnToPool()
+    public override void Launch(Vector2 direction, float speed)
     {
-        // Đặt lại trạng thái
-        isHit = false;
-        gameObject.SetActive(false);
-
-        rb.linearVelocity = Vector2.zero;
-        GetComponent<Collider2D>().enabled = true;
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        
-        pool.Return(this);
-    }
-
-    public void Launch(Vector2 direction, float speed)
-    {
-        // Đặt lại trạng thái khi bắn
         isHit = false;
         if (direction == Vector2.right)
         {
@@ -76,10 +50,5 @@ public class Bullet : MonoBehaviour
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         return stateInfo.IsName(animationName) && stateInfo.normalizedTime >= 1f;
     }
-
-    private void OnDisable()
-    {
-        // Reset trạng thái khi bị tắt
-        rb.linearVelocity = Vector2.zero;
-    }
+    
 }
