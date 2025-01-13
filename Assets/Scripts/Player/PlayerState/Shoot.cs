@@ -28,7 +28,7 @@ public class Shoot : State
         context.animator.SetBool("isShooting", false);
     }
 
-    private void Shooting()
+    public void Shooting()
     {
         if (context.playerController.transform.rotation.y == 0) {
             bulletDirection = Vector2.right;

@@ -4644,6 +4644,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1439a1fd555717b4e81abf5b840b036e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletSpawner: {fileID: 1726491526}
 --- !u!114 &1000379806
 MonoBehaviour:
   m_ObjectHideFlags: 0
