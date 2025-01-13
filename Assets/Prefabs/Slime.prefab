@@ -126,9 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c38817e7eff30e49b415d400e89f425, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  damageInterval: 0.5
 --- !u!114 &9004915690710670281
 MonoBehaviour:
   m_ObjectHideFlags: 0
