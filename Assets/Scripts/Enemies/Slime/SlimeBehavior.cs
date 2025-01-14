@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using System.Security.Cryptography.X509Certificates;
+
 
 public class SlimeBehavior : MonoBehaviour, IDamager, IDeathable, IDamageable
 {
@@ -82,7 +82,7 @@ public class SlimeBehavior : MonoBehaviour, IDamager, IDeathable, IDamageable
     {
         rb.bodyType = RigidbodyType2D.Kinematic; 
         rb.linearVelocity = Vector2.zero; 
-        collider2D.enabled = false;
+        // collider2D.enabled = false;
         StartCoroutine(BlinkAndDestroy());
     }
     
@@ -92,10 +92,18 @@ public class SlimeBehavior : MonoBehaviour, IDamager, IDeathable, IDamageable
         if (collision.gameObject.CompareTag("Player"))
         {
             Transform playerTransform = collision.gameObject.transform;
+            IDamageable player = collision.gameObject.GetComponent<IDamageable>();
 
             if (transform.DotTest(playerTransform, Vector2.up))
             {
                 Death();
+            }
+            else
+            {
+                if (player != null)
+                {
+                    DealDamage(player);
+                }   
             }
         }
     }

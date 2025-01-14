@@ -45,6 +45,8 @@ public class PlayerController : MonoBehaviour, IDamageable, IDeathable
         collider2D = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         camera = Camera.main;
+        
+        isHurted = false;
     }
 
     private void Update()
@@ -143,65 +145,21 @@ public class PlayerController : MonoBehaviour, IDamageable, IDeathable
 
     public void TakeDamage(float damage) {
         currentHP -= damage;
+        Hurt();
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        IDamager damager = collision.gameObject.GetComponent<IDamager>();
-        IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
-        IImuneToStomp imune = collision.gameObject.GetComponent<IImuneToStomp>();
-
-        if (damager != null)
-        {
-            if (imune != null)
-            {
-                Hurt(damager);
-            } 
-            else if (IsAboveTarget(collision))
-            {
-                Bounce();
-            }
-            else
-            {
-                Hurt(damager);
-            }
-        }
-    }
-
     private void OnCollisionExit2D(Collision2D collision)
     {
+        isHurted = false;
         IDamager damager = collision.gameObject.GetComponent<IDamager>();
         if (damager != null)
         {
             isHurted = false;
         }
     }
-    
-    private bool IsAboveTarget(Collision2D collision)
+    private void Hurt()
     {
-        // Kiểm tra Player có va chạm từ phía trên không
-        ContactPoint2D[] contacts = collision.contacts;
-        foreach (ContactPoint2D contact in contacts)
-        {
-            if (contact.normal.y > 0.5f) // Va chạm từ trên xuống
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private void Hurt(IDamager damager)
-    {
-        damager.DealDamage(this);
         isHurted = true;
         StartCoroutine(HurtedEffect());
-    }
-
-    private void Bounce()
-    {
-        // Lực nảy lên khi tiêu diệt Enemy
-        rigidbody2D.linearVelocity = new Vector2(velocity.x, 10f);
     }
 
     public void Death()

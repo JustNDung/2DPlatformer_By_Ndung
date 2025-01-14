@@ -20,12 +20,12 @@ public abstract class BulletBase : MonoBehaviour, IDamager
     }
     public void SetPool(GenericObjectPool<BulletBase> pool)
     {
-        this.bulletPool = pool;
+        bulletPool = pool;
     }
 
     public abstract void Launch(Vector2 direction, float speed);
     
-    public void ReturnToPool()
+    protected void ReturnToPool()
     {
         // Đặt lại trạng thái
         isHit = false;

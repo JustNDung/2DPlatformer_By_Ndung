@@ -16,7 +16,6 @@ public class LizardBehavior : MonoBehaviour, IDamageable, IDamager, IImuneToStom
     [SerializeField] float currentHP;
     [SerializeField] float damageInterval = 0.5f;
     [SerializeField] float firballInterval = 2f;
-
     private void Awake()
     {
         collider2D = GetComponent<Collider2D>();
@@ -84,6 +83,7 @@ public class LizardBehavior : MonoBehaviour, IDamageable, IDamager, IImuneToStom
     {
         if (currentHP <= 0)
         {
+            StopCoroutine(ShootFireballRoutine());
             Death();
         }
     }
@@ -112,7 +112,6 @@ public class LizardBehavior : MonoBehaviour, IDamageable, IDamager, IImuneToStom
 
         // Đảm bảo Slime ẩn hoàn toàn trước khi bị phá hủy
         spriteRenderer.enabled = false;
-
         // Phá hủy đối tượng Slime
         Destroy(gameObject);
     }
@@ -126,13 +125,25 @@ public class LizardBehavior : MonoBehaviour, IDamageable, IDamager, IImuneToStom
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Kiểm tra va chạm với Player
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                DealDamage(damageable);
+            }
+        }
+    }
+
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player") && damageCoroutine != null)
         {
             StopCoroutine(damageCoroutine);
             damageCoroutine = null;
-            
         }
     }
     

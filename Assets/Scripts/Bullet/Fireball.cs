@@ -2,23 +2,24 @@ using UnityEngine;
 
 public class Fireball : BulletBase
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!isHit)
+        rb.linearVelocity = Vector2.zero;
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.gravityScale = 0f;
+        // collide.enabled = false;
+        // Trigger hit animation
+        animator.SetTrigger("Hit");
+        
+        // if (isHit) return;
+        isHit = true;
+        IDamageable target = collision.gameObject.GetComponent<IDamageable>();
+        
+        if (target != null)
         {
-            IDamageable target = collision.GetComponent<IDamageable>();
-            if (target != null)
-            {
-                DealDamage(target);
-            }
-            isHit = true;
-            
-            rb.linearVelocity = Vector2.zero;
-            rb.bodyType = RigidbodyType2D.Kinematic;
-            collide.enabled = false;
-            
-            animator.SetTrigger("Hit");
+            DealDamage(target); // Call TakeDamage on the target
         }
+        
     }
 
     private void Update()
