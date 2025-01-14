@@ -10,7 +10,10 @@ public class Jump : State
     }
     public override void HandleInput()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            context.ChangeState(context.shoot);
+        }
     }
     public override void LogicUpdate()
     {
