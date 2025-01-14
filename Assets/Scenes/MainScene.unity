@@ -258,7 +258,7 @@ Transform:
   m_GameObject: {fileID: 153016118}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.71, y: -2, z: 0}
+  m_LocalPosition: {x: 11.46, y: -2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -277,10 +277,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 163ff8da9fd4e604cbd319a95065695a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletSpawner: {fileID: 0}
+  bulletSpawner: {fileID: 952368513}
   maxHP: 10
   currentHP: 0
   damageInterval: 0.5
+  firballInterval: 2
 --- !u!50 &153016123
 Rigidbody2D:
   serializedVersion: 5
@@ -4583,6 +4584,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 1000379799}
+  playerHP: 100
 --- !u!4 &795418215
 Transform:
   m_ObjectHideFlags: 0
@@ -4608,7 +4610,7 @@ GameObject:
   m_Component:
   - component: {fileID: 952368512}
   - component: {fileID: 952368513}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: BulletSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4639,12 +4641,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 952368511}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af2d76a0f27bbf349b22d2e7a27a5df1, type: 3}
+  m_Script: {fileID: 11500000, guid: f70b0fe15dd9d3e4ca6834633eda58c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 2525259536428306736, guid: a1666098146782246a1fa6cd0410626e, type: 3}
+  bulletPrefab: {fileID: -2054575088381828625, guid: a1666098146782246a1fa6cd0410626e, type: 3}
   initialBulletCount: 10
   bulletSpeed: 10
+  offset: 1
+  amount: 3
 --- !u!1 &1000379793
 GameObject:
   m_ObjectHideFlags: 0
@@ -4789,7 +4793,6 @@ MonoBehaviour:
   mutiplerIfFalling: 2
   mutiplerIfNotFalling: 1
   blinkDuration: 0.1
-  blinkCount: 5
 --- !u!114 &1000379800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6830,7 +6833,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1726491525}
   - component: {fileID: 1726491526}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: BulletSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}

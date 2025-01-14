@@ -12,6 +12,11 @@ public class Fireball : BulletBase
                 DealDamage(target);
             }
             isHit = true;
+            
+            rb.linearVelocity = Vector2.zero;
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            collide.enabled = false;
+            
             animator.SetTrigger("Hit");
         }
     }
