@@ -3,7 +3,7 @@ using UnityEngine;
 public class EntityMovement : MonoBehaviour
 {
     public float speed = 1f;
-    private float checkCollideDistance = 0.75f;
+    private float checkCollideDistance = 0.5f;
     public Vector2 direction = Vector2.left;
     
     private Rigidbody2D rigidbody2d;
