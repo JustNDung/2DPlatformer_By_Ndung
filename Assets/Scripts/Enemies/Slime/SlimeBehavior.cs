@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 
-
 public class SlimeBehavior : MonoBehaviour, IDamager, IDeathable, IDamageable
 {
     private Rigidbody2D rb;
@@ -12,60 +11,51 @@ public class SlimeBehavior : MonoBehaviour, IDamager, IDeathable, IDamageable
     [SerializeField] float maxHP = 5f;
     private float currentHP;
     private Coroutine damageCoroutine;
-    
-    private void Awake() {
+    private bool isDead = false; // Cờ trạng thái để quản lý hành vi
+
+    public bool IsDead => isDead;
+
+    private void Awake()
+    {
         currentHP = maxHP;
         collider2D = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    private void Update()
+    private IEnumerator BlinkAndDestroy()
     {
+        float blinkDuration = 1.5f; // Tổng thời gian nhấp nháy
+        float blinkInterval = 0.1f; // Khoảng thời gian giữa mỗi lần nhấp nháy
+        float elapsedTime = 0f;
+
+        while (elapsedTime < blinkDuration)
+        {
+            spriteRenderer.enabled = !spriteRenderer.enabled;
+            elapsedTime += blinkInterval;
+            yield return new WaitForSeconds(blinkInterval);
+        }
+
+        spriteRenderer.enabled = false;
+        Destroy(gameObject); // Phá hủy Slime
+    }
+
+    public void TakeDamage(float damage)
+    {
+        if (isDead) return; // Không nhận thêm sát thương khi đã chết
+        currentHP -= damage;
+        
         if (currentHP <= 0)
         {
             Death();
         }
     }
-    
-    private IEnumerator BlinkAndDestroy() {
-
-        float blinkDuration = 1.5f; // Tổng thời gian nhấp nháy
-        float blinkInterval = 0.1f; // Khoảng thời gian giữa mỗi lần nhấp nháy
-        float elapsedTime = 0f;
-
-        while (elapsedTime < blinkDuration) {
-            // Chuyển đổi trạng thái hiển thị
-            spriteRenderer.enabled = !spriteRenderer.enabled;
-
-            elapsedTime += blinkInterval;
-            yield return new WaitForSeconds(blinkInterval);
-        }
-
-        // Đảm bảo Slime ẩn hoàn toàn trước khi bị phá hủy
-        spriteRenderer.enabled = false;
-
-        // Phá hủy đối tượng Slime
-        Destroy(gameObject);
-    }
-
-    public void TakeDamage(float damage)
-    {
-        currentHP -= damage;
-    }
 
     public void DealDamage(IDamageable target)
     {
-        if (target != null)
+        if (target != null && damageCoroutine == null)
         {
-            PlayerController player = target as PlayerController;
-            if (player != null)
-            {
-                if (damageCoroutine == null)
-                {
-                    damageCoroutine = StartCoroutine(DealDamageOverTime(target));
-                }
-            }
+            damageCoroutine = StartCoroutine(DealDamageOverTime(target));
         }
     }
 
@@ -76,19 +66,29 @@ public class SlimeBehavior : MonoBehaviour, IDamager, IDeathable, IDamageable
             target.TakeDamage(DamageAmount);
             yield return new WaitForSeconds(damageInterval);
         }
+        damageCoroutine = null;
     }
 
     public void Death()
     {
-        rb.bodyType = RigidbodyType2D.Kinematic; 
-        rb.linearVelocity = Vector2.zero; 
-        // collider2D.enabled = false;
+        if (isDead) return; // Tránh gọi nhiều lần
+        isDead = true;
+
+        // Gửi thông báo tới EntityMovement để dừng di chuyển
+        if (TryGetComponent<EntityMovement>(out var movement))
+        {
+            movement.enabled = false;
+        }
+
+        rb.linearVelocity = Vector2.zero; // Dừng chuyển động
+        rb.bodyType = RigidbodyType2D.Kinematic;
         StartCoroutine(BlinkAndDestroy());
     }
-    
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Kiểm tra va chạm với Player
+        if (isDead) return;
+
         if (collision.gameObject.CompareTag("Player"))
         {
             Transform playerTransform = collision.gameObject.transform;
@@ -98,12 +98,9 @@ public class SlimeBehavior : MonoBehaviour, IDamager, IDeathable, IDamageable
             {
                 Death();
             }
-            else
+            else if (player != null)
             {
-                if (player != null)
-                {
-                    DealDamage(player);
-                }   
+                DealDamage(player);
             }
         }
     }
@@ -116,5 +113,4 @@ public class SlimeBehavior : MonoBehaviour, IDamager, IDeathable, IDamageable
             damageCoroutine = null;
         }
     }
-
 }

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2310520730066999168}
   - component: {fileID: 8097802984443617234}
   - component: {fileID: 2889765508716444991}
+  - component: {fileID: 4536368063320433553}
   m_Layer: 7
   m_Name: Slime
   m_TagString: Untagged
@@ -190,3 +191,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageInterval: 0.5
   maxHP: 5
+--- !u!114 &4536368063320433553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4279447608732977475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b944a98e38a7e6c4fbf157055f481488, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 2112
