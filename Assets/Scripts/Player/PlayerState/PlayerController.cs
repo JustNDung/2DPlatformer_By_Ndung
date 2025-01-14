@@ -32,9 +32,7 @@ public class PlayerController : MonoBehaviour, IDamageable, IDeathable
     private float inputAxis;
     private Vector2 velocity;
     public float blinkDuration = 0.1f; // Thời gian mỗi lần nhấp nháy
-    public int blinkCount = 5; // Số lần nhấp nháy
     private float checkCollideDistanceWithObject = 1.4f;
-    private float checkCollideDistanceWithEntity = 0.6f;
     public float maxHP {get; private set;}
     public float currentHP {get; private set;}
     private void Awake()
@@ -208,7 +206,6 @@ public class PlayerController : MonoBehaviour, IDamageable, IDeathable
 
     public void Death()
     {
-        currentHP = maxHP; 
         GameManager.Instance.OnPlayerDeath();
     }
     

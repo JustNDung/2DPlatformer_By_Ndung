@@ -16,7 +16,7 @@ public class PlayerBullet : BulletBase
             
             rb.linearVelocity = Vector2.zero;
             rb.bodyType = RigidbodyType2D.Kinematic;
-            collider.enabled = false;
+            collide.enabled = false;
             
             animator.SetTrigger("Hit");
         }

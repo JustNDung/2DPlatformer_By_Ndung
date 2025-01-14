@@ -6,7 +6,7 @@ public class SlimeBehavior : MonoBehaviour, IDamager, IDeathable, IDamageable
 {
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
-    private Collider2D collider2D;
+    private new Collider2D collider2D;
     public float DamageAmount => 3f;
     [SerializeField] float damageInterval = 0.5f;
     [SerializeField] float maxHP = 5f;

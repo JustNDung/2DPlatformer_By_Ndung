@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; } 
 
     public PlayerController playerController; // Tham chiếu tới Player
-    private float playerHP = 100f; // HP ban đầu của Player
+    [SerializeField] private float playerHP = 100f; // HP ban đầu của Player
 
     private void Awake()
     {
@@ -46,15 +46,18 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Player reference is missing in GameManager!");
         }
     }
-
+ 
     public void OnPlayerDeath()
     {
+        
         Debug.Log("Player has died. Resetting Scene...");
         Invoke("ResetScene", 2f); // Gọi reset Scene sau 2 giây
     }
 
     private void ResetScene()
     {
+        playerHP = 100f; // Reset HP
+        InitializePlayer();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Tải lại Scene hiện tại
     }
 }

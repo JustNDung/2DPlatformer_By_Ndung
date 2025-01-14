@@ -5,13 +5,13 @@ public abstract class BulletBase : MonoBehaviour, IDamager
     protected GenericObjectPool<BulletBase> bulletPool;
     protected Animator animator;
     protected Rigidbody2D rb;
-    protected Collider2D collider;
+    protected Collider2D collide;
     protected bool isHit;
     public float DamageAmount => 5f;
 
     private void Awake()
     {
-        collider = GetComponent<Collider2D>();
+        collide = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
@@ -32,7 +32,7 @@ public abstract class BulletBase : MonoBehaviour, IDamager
         gameObject.SetActive(false);
 
         rb.linearVelocity = Vector2.zero;
-        collider.enabled = true;
+        collide.enabled = true;
         rb.bodyType = RigidbodyType2D.Dynamic;
         
         bulletPool.Return(this);

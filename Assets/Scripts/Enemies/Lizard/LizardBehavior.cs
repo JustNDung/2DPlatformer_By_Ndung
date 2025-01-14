@@ -8,12 +8,14 @@ public class LizardBehavior : MonoBehaviour, IDamageable, IDamager, IImuneToStom
     private Rigidbody2D rb2d;
     private SpriteRenderer spriteRenderer;
     private Coroutine damageCoroutine;
-    private Collider2D collider2D;
+    private Coroutine shootCoroutine;
+    private new Collider2D collider2D;
     [SerializeField] BulletSpawner bulletSpawner;
     public float DamageAmount => 6f;
     [SerializeField] float maxHP = 10f;
     [SerializeField] float currentHP;
     [SerializeField] float damageInterval = 0.5f;
+    [SerializeField] float firballInterval = 2f;
 
     private void Awake()
     {
@@ -22,6 +24,20 @@ public class LizardBehavior : MonoBehaviour, IDamageable, IDamager, IImuneToStom
         animator = GetComponent<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
         currentHP = maxHP;
+    }
+    
+    private void Start()
+    {
+        shootCoroutine = StartCoroutine(ShootFireballRoutine());
+    }
+
+    private void OnDisable()
+    {
+        if (shootCoroutine != null)
+        {
+            StopCoroutine(shootCoroutine);
+            shootCoroutine = null;
+        }
     }
 
     public void TakeDamage(float damage)
@@ -46,7 +62,20 @@ public class LizardBehavior : MonoBehaviour, IDamageable, IDamager, IImuneToStom
 
     private void ShootFireBall()
     {
-        animator.SetTrigger("Hit");
+        animator.SetTrigger("Shooting");
+        if (bulletSpawner != null)
+        {
+            bulletSpawner.SpawnBullet(bulletSpawner.transform.position, Vector2.left);
+        }
+    }
+
+    private IEnumerator ShootFireballRoutine()
+    {
+        while (true)
+        {
+            ShootFireBall();
+            yield return new WaitForSeconds(firballInterval);
+        }
     }
 
     private void Update()
@@ -101,6 +130,7 @@ public class LizardBehavior : MonoBehaviour, IDamageable, IDamager, IImuneToStom
         {
             StopCoroutine(damageCoroutine);
             damageCoroutine = null;
+            
         }
     }
     
