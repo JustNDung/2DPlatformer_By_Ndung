@@ -62,7 +62,7 @@ public class LizardBehavior : MonoBehaviour, IDamageable, IDamager, IImuneToStom
 
     private void ShootFireBall()
     {
-        animator.SetTrigger("Shooting");
+        animator.SetBool("isShooting", true);
         if (bulletSpawner != null)
         {
             bulletSpawner.SpawnBullet(bulletSpawner.transform.position, Vector2.left);
@@ -74,6 +74,8 @@ public class LizardBehavior : MonoBehaviour, IDamageable, IDamager, IImuneToStom
         while (true)
         {
             ShootFireBall();
+            yield return new WaitForSeconds(0.03f);
+            animator.SetBool("isShooting", false);
             yield return new WaitForSeconds(firballInterval);
         }
     }
