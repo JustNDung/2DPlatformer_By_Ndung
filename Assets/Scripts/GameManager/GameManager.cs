@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement; // Import để quản lý Scene
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class GameManager : MonoBehaviour
 
     public PlayerController playerController; // Tham chiếu tới Player
     [SerializeField] private float playerHP = 100f; // HP ban đầu của Player
+    private bool isSceneResetting = false; // Prevent multiple resets
 
     private void Awake()
     {
@@ -29,13 +31,14 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (playerController.currentHP <= 0)
+        if (!isSceneResetting && playerController.currentHP <= 0)
         {
+            isSceneResetting = true;
             playerController.Death();
         }
     }
 
-    private void InitializePlayer()
+    public void InitializePlayer()
     {
         if (playerController != null)
         {
@@ -44,6 +47,7 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.LogError("Player reference is missing in GameManager!");
+            ReacquirePlayerReference();
         }
     }
  
@@ -51,13 +55,41 @@ public class GameManager : MonoBehaviour
     {
         
         Debug.Log("Player has died. Resetting Scene...");
-        Invoke("ResetScene", 2f); // Gọi reset Scene sau 2 giây
+        StartCoroutine(ResetSceneAfterDelay(2f));
+    }
+    private IEnumerator ResetSceneAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ResetScene();
     }
 
     private void ResetScene()
     {
-        playerHP = 100f; // Reset HP
-        InitializePlayer();
+        
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Tải lại Scene hiện tại
+        SceneManager.sceneLoaded += OnSceneReloadComplete;
+    }
+
+    private void ReacquirePlayerReference()
+    {
+        playerController = FindFirstObjectByType<PlayerController>();
+        if (playerController != null)
+        {
+            playerController.SetInitialHP(playerHP);
+            Debug.Log("Player reference reacquired and HP reset.");
+        }
+        else
+        {
+            Debug.LogError("Player reference could not be reacquired!");
+        }
+    }
+
+
+    private void OnSceneReloadComplete(Scene scene, LoadSceneMode mode)
+    {
+        SceneManager.sceneLoaded -= OnSceneReloadComplete;
+        isSceneResetting = false;
+        ReacquirePlayerReference();
+        Debug.Log("Scene reset complete and player reinitialized.");
     }
 }
