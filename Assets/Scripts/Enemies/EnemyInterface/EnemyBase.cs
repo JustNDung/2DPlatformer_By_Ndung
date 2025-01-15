@@ -91,7 +91,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable, IDeathable, IDamag
             movement.enabled = false;
         }
 
-        //collider2D.enabled = false;
+        // collider2D.enabled = false;
         rb.linearVelocity = Vector2.zero; // Stop all movement
         rb.bodyType = RigidbodyType2D.Kinematic;
         StartCoroutine(BlinkAndDestroy());
