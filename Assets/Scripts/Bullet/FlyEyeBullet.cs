@@ -1,7 +1,8 @@
 using UnityEngine;
 
-public class Fireball : BulletBase
+public class FlyEyeBullet : BulletBase
 {
+    public override float DamageAmount => 7.5f;
     private void OnCollisionEnter2D(Collision2D collision)
     {
         rb.linearVelocity = Vector2.zero;
@@ -25,7 +26,7 @@ public class Fireball : BulletBase
     private void Update()
     {
         // Kiểm tra nếu animation "Hit" đã kết thúc
-        if (isHit && IsAnimationComplete("Explosion_Animation"))
+        if (isHit && IsAnimationComplete("shoot-hit-Animation"))
         {
             ReturnToPool();
         }

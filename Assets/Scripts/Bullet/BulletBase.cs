@@ -7,7 +7,7 @@ public abstract class BulletBase : MonoBehaviour, IDamager
     protected Rigidbody2D rb;
     protected Collider2D collide;
     protected bool isHit;
-    public float DamageAmount => 5f;
+    public virtual float DamageAmount => 5f;
 
     private void Awake()
     {

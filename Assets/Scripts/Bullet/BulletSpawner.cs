@@ -16,7 +16,7 @@ public abstract class BulletSpawner : MonoBehaviour
         bulletPool = new GenericObjectPool<BulletBase>(bulletPrefab, initialBulletCount);
     }
     
-    public void SpawnBullet(Vector2 spawnPos, Vector2 direction)
+    public virtual void SpawnBullet(Vector2 spawnPos, Vector2 direction)
     {
         for (int i = 0; i < amount; i++) 
         {
