@@ -1,14 +1,14 @@
+
 using UnityEngine;
 
 public class PlayerBulletSpawner : BulletSpawner
 {
-    public override void SpawnBullet(Vector2 position, Vector2 direction)
+    [SerializeField] private float playerOffset = 0f;
+    [SerializeField] private int playerAmount = 1;
+    
+    private void Start()
     {
-        BulletBase bullet = bulletPool.Get();
-        bullet.transform.position = position;
-        bullet.transform.rotation = Quaternion.identity;
-
-        bullet.SetPool(bulletPool);
-        bullet.Launch(direction, bulletSpeed);
+        offset = playerOffset;
+        amount = playerAmount;
     }
 }
