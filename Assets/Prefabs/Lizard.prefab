@@ -176,7 +176,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 5
+  m_Constraints: 7
 --- !u!114 &8690944480712817531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,11 +189,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 163ff8da9fd4e604cbd319a95065695a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireballInterval: 2
   bulletSpawner: {fileID: 5323592974586526442}
-  maxHP: 10
-  currentHP: 0
-  damageInterval: 0.5
-  firballInterval: 2
 --- !u!1 &7766908523222811720
 GameObject:
   m_ObjectHideFlags: 0
