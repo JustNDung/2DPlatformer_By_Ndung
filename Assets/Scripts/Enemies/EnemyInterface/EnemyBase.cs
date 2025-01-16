@@ -70,7 +70,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable, IDeathable, IDamag
         }
     }
 
-    protected IEnumerator DealDamageOverTime(IDamageable target)
+    private IEnumerator DealDamageOverTime(IDamageable target)
     {
         while (target != null)
         {
