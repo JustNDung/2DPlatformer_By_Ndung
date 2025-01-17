@@ -4,26 +4,28 @@ using UnityEngine;
 
 public class Jump : State
 {
+    private PlayerStateMachine stateMachine;
     public override void Enter()
     {
-        context.animator.SetBool("isJumping", true);
+        stateMachine = GetComponent<PlayerStateMachine>();
+        stateMachine.animator.SetBool("isJumping", true);
     }
     public override void HandleInput()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            context.ChangeState(context.shoot);
+            stateMachine.ChangeState(stateMachine.shoot);
         }
     }
     public override void LogicUpdate()
     {
-        bool falling = context.playerController.isFalling;
+        bool falling = stateMachine.playerController.isFalling;
         if (falling) {
-            context.ChangeState(context.fall);
+            stateMachine.ChangeState(stateMachine.fall);
         }
     }
     public override void Exit()
     {
-        context.animator.SetBool("isJumping", false);
+        stateMachine.animator.SetBool("isJumping", false);
     }
 }

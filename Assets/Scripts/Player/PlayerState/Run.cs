@@ -2,9 +2,11 @@ using UnityEngine;
 
 public class Run : State
 {
+    private PlayerStateMachine stateMachine;
     public override void Enter()
     {
-        context.animator.SetBool("isRunning", true);
+        stateMachine = GetComponent<PlayerStateMachine>();
+        stateMachine.animator.SetBool("isRunning", true);
     }
 
     public override void HandleInput()
@@ -12,20 +14,20 @@ public class Run : State
         // Xử lý input khi đang trong trạng thái "Run"
         if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
         {
-            context.ChangeState(context.idle);
+            stateMachine.ChangeState(stateMachine.idle);
         }
         else if (Input.GetKey(KeyCode.Space))
         {
-            context.ChangeState(context.jump);
+            stateMachine.ChangeState(stateMachine.jump);
         }
         else if (Input.GetKey(KeyCode.LeftControl))
         {
-            context.ChangeState(context.slide);
+            stateMachine.ChangeState(stateMachine.slide);
         }
         else if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)) 
                 && Input.GetKey(KeyCode.Mouse0))
         {
-            context.ChangeState(context.runShoot);
+            stateMachine.ChangeState(stateMachine.runShoot);
         }
     }
 
@@ -36,7 +38,7 @@ public class Run : State
 
     public override void Exit()
     {
-        context.animator.SetBool("isRunning", false);  
+        stateMachine.animator.SetBool("isRunning", false);  
     }
 
 }

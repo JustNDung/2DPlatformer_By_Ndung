@@ -1,9 +1,11 @@
 using UnityEngine;
-public class Context : MonoBehaviour
+public class PlayerStateMachine : StateMachineBase
 {
-    public State currentState;  
     public Animator animator;
     public Rigidbody2D rb;
+    
+    public PlayerController playerController;
+    
     public Duck duck;
     public Fall fall;
     public Hurt hurt;
@@ -15,10 +17,12 @@ public class Context : MonoBehaviour
     public Shoot shoot;
     public Slide slide;
     public Spin spin;
-    public PlayerController playerController;
+    
     private void Awake() {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        
+        playerController = GetComponent<PlayerController>();
 
         duck = GetComponent<Duck>();
         fall = GetComponent<Fall>();
@@ -31,31 +35,6 @@ public class Context : MonoBehaviour
         shoot = GetComponent<Shoot>();
         slide = GetComponent<Slide>();
         spin = GetComponent<Spin>();
-
-        playerController = GetComponent<PlayerController>();
-    }
-    public void ChangeState(State newState)
-    {
-        if (currentState != null)
-        {
-            currentState.Exit();  
-        }
-
-        this.currentState = newState;
-        this.currentState.SetContext(this);  
-        this.currentState.Enter();  
-
-    }
-    public void StateUpdate()
-    {
-        if (this.currentState != null)
-        {
-            this.currentState.HandleInput();  
-            this.currentState.LogicUpdate();       
-        } 
-        else
-        {
-            throw new System.Exception("Current State is null");
-        }
+        
     }
 }

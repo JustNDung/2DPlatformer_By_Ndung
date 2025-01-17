@@ -2,32 +2,33 @@ using UnityEngine;
 
 public class Idle : State
 {
+    private PlayerStateMachine stateMachine;
     public override void Enter()
     {
-
+        stateMachine = GetComponent<PlayerStateMachine>();
     }
     public override void HandleInput()
     {
 
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
         {
-            context.ChangeState(context.run);
+            stateMachine.ChangeState(stateMachine.run);
         }
         else if (Input.GetKey(KeyCode.Space))
         {
-            context.ChangeState(context.jump);
+            stateMachine.ChangeState(stateMachine.jump);
         }
         else if (Input.GetKey(KeyCode.C))
         {
-            context.ChangeState(context.duck);
+            stateMachine.ChangeState(stateMachine.duck);
         }
         else if (Input.GetKey(KeyCode.Mouse0))
         {
-            context.ChangeState(context.shoot);
+            stateMachine.ChangeState(stateMachine.shoot);
         }
         else if (Input.GetKey(KeyCode.LeftControl))
         {
-            context.ChangeState(context.slide);
+            stateMachine.ChangeState(stateMachine.slide);
         }   
     }
     public override void LogicUpdate()
