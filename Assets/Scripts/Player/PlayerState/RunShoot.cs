@@ -5,10 +5,13 @@ public class RunShoot : State
     private Vector2 bulletDirection;
     [SerializeField] private BulletSpawner bulletSpawner;
 
+    private PlayerStateMachine stateMachine;
+
     public override void Enter()
     {
-        context.animator.SetBool("isRunning", true);
-        context.animator.SetBool("isShooting", true);
+        stateMachine = GetComponent<PlayerStateMachine>();
+        stateMachine.animator.SetBool("isRunning", true);
+        stateMachine.animator.SetBool("isShooting", true);
         Shooting();
     }
 
@@ -16,7 +19,7 @@ public class RunShoot : State
     {
         if (!Input.GetKey(KeyCode.Mouse0)) // Ngừng bắn
         {
-            context.ChangeState(context.run);
+            stateMachine.ChangeState(stateMachine.run);
         }
     }
 
@@ -27,7 +30,7 @@ public class RunShoot : State
     
     public void Shooting()
     {
-        if (context.playerController.transform.rotation.y == 0) {
+        if (stateMachine.playerController.transform.rotation.y == 0) {
             bulletDirection = Vector2.right;
         } else {
             bulletDirection = Vector2.left;
@@ -37,8 +40,8 @@ public class RunShoot : State
 
     public override void Exit()
     {
-        context.animator.SetBool("isRunning", false);
-        context.animator.SetBool("isShooting", false);
+        stateMachine.animator.SetBool("isRunning", false);
+        stateMachine.animator.SetBool("isShooting", false);
     }
 }
 

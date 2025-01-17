@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IDamageable, IDeathable
 {
-    private Context context;
+    private PlayerStateMachine _playerStateMachine;
     private Idle initialState;
 
     private new Camera camera;
@@ -38,8 +38,8 @@ public class PlayerController : MonoBehaviour, IDamageable, IDeathable
     private void Awake()
     {
         initialState = GetComponent<Idle>();
-        context = GetComponent<Context>();
-        context.ChangeState(initialState);
+        _playerStateMachine = GetComponent<PlayerStateMachine>();
+        _playerStateMachine.ChangeState(initialState);
 
         rigidbody2D = GetComponent<Rigidbody2D>();
         collider2D = GetComponent<Collider2D>();
@@ -61,9 +61,9 @@ public class PlayerController : MonoBehaviour, IDamageable, IDeathable
         }
         ApplyGravity();
 
-        if (context != null)
+        if (_playerStateMachine != null)
         {
-            context.StateUpdate();
+            _playerStateMachine.StateUpdate();
         }
         else
         {

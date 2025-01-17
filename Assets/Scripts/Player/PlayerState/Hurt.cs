@@ -1,11 +1,11 @@
-using UnityEngine;
 
-// Not using yet...
 public class Hurt : State
 {
+    private PlayerStateMachine stateMachine;
     public override void Enter()
     {
-        context.animator.SetBool("isHurted", true);
+        stateMachine = GetComponent<PlayerStateMachine>();
+        stateMachine.animator.SetBool("isHurted", true);
     }
     public override void HandleInput()
     {
@@ -13,12 +13,12 @@ public class Hurt : State
     }
     public override void LogicUpdate()
     {
-        if (!context.playerController.isHurted) {
-            context.ChangeState(context.idle);
+        if (!stateMachine.playerController.isHurted) {
+            stateMachine.ChangeState(stateMachine.idle);
         }
     }
     public override void Exit()
     {
-        context.animator.SetBool("isHurted", false);
+        stateMachine.animator.SetBool("isHurted", false);
     }
 }

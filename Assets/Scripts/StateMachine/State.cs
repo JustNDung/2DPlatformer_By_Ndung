@@ -2,10 +2,10 @@ using UnityEngine;
 
 public abstract class State : MonoBehaviour
 {
-    protected Context context;
-    public void SetContext(Context context)
+    protected StateMachineBase stateMachine;
+    public void SetContext(StateMachineBase stateMachine)
     {
-        this.context = context;
+        this.stateMachine = stateMachine;
     }
 
     public abstract void Enter();  

@@ -2,25 +2,27 @@ using UnityEngine;
 
 public class Fall : State
 {
+    private PlayerStateMachine stateMachine;
     public override void Enter()
     {
-        context.animator.SetBool("isFalling", true);
+        stateMachine = GetComponent<PlayerStateMachine>();
+        stateMachine.animator.SetBool("isFalling", true);
     }
     public override void Exit()
     {
-        context.animator.SetBool("isFalling", false);
+        stateMachine.animator.SetBool("isFalling", false);
     }
     public override void HandleInput()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            context.ChangeState(context.shoot);
+            stateMachine.ChangeState(stateMachine.shoot);
         }
     }
     public override void LogicUpdate()
     {
-        if (context.playerController.isGrounded) {
-            context.ChangeState(context.idle);
+        if (stateMachine.playerController.isGrounded) {
+            stateMachine.ChangeState(stateMachine.idle);
         }
     }
 }
