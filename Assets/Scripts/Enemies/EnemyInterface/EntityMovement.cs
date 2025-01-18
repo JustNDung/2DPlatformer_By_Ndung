@@ -1,39 +1,73 @@
+using System;
 using UnityEngine;
+using System.Collections;
 
 public class EntityMovement : MonoBehaviour
 {
-    public float speed = 1f;
-    public LayerMask obstacleLayer;
+    [SerializeField] private float speed = 1f;
+    [SerializeField] private float pauseDuration = 1.5f;
+    [SerializeField] private LayerMask obstacleLayer;
+    [SerializeField] private GameObject player;
 
     private Rigidbody2D rb;
-    private Vector2 direction;
-
+    public Vector2 direction;
+    public bool isPaused = false;
+    
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        // Initialize with an initial direction
-        direction = Vector2.left;
+        direction = Vector2.left; // Initialize with an initial direction
     }
 
     private void Update()
     {
-        // Move the entity
-        rb.linearVelocity = direction * speed;
-        
-        if (direction.x < 0)
+        if (!isPaused)
         {
-            transform.eulerAngles = Vector3.zero;
-        }
-        else if (direction.x > 0)
-        {
-            transform.eulerAngles = new Vector3(0, 180, 0);
-        }
+            // Move the entity
+            rb.linearVelocity = direction * speed;
 
-        // Perform a raycast to check for obstacles
-        if (rb.Raycast(direction, 0.75f, obstacleLayer))
+            if (direction.x < 0)
+            {
+                transform.eulerAngles = Vector3.zero;
+            }
+            else if (direction.x > 0)
+            {
+                transform.eulerAngles = new Vector3(0, 180, 0);
+            }
+
+            // Perform a raycast to check for obstacles
+            if (Physics2D.Raycast(rb.position, direction, 0.75f, obstacleLayer))
+            {
+                StartCoroutine(ChangeDirectionAfterPause());
+            }
+        }
+    }
+
+    private IEnumerator ChangeDirectionAfterPause()
+    {
+        isPaused = true;
+        rb.linearVelocity = Vector2.zero; // Stop movement
+        yield return new WaitForSeconds(pauseDuration); // Wait for 1 second
+        direction = -direction; // Reverse direction
+        isPaused = false;
+    }
+
+    private void OnDisable()
+    {
+        rb.linearVelocity = Vector2.zero;
+    }
+
+    public void UpdateDirection()
+    {
+        if (player != null)
         {
-            // Reverse direction if an obstacle is detected
-            direction = -direction;
+            // Calculate direction towards the player
+            Vector2 playerPosition = player.transform.position;
+            Vector2 currentPosition = rb.position;
+            Vector2 newDirection = (playerPosition - currentPosition).normalized;
+
+            // Update the direction while maintaining the current movement axis
+            direction = new Vector2(newDirection.x, 0).normalized;
         }
     }
 }
