@@ -2,14 +2,16 @@ using UnityEngine;
 
 public class EFWIdle : State
 {
-    private EFWStateMachine stateMachine;
+    // private EFWStateMachine stateMachine;
     private EntityMovement entityMovement;
+    private EFWBehavior behavior;
     [SerializeField] private GameObject player;
     
     public override void Enter()
     {
-        stateMachine = GetComponent<EFWStateMachine>();
+        // stateMachine = GetComponent<EFWStateMachine>();
         entityMovement = GetComponent<EntityMovement>();
+        behavior = GetComponent<EFWBehavior>();
         // entityMovement.enabled = false;
         Debug.Log("Idle");
     }
@@ -21,13 +23,17 @@ public class EFWIdle : State
 
     public override void LogicUpdate()
     {
-        if(Mathf.Abs(transform.position.x - player.transform.position.x) <= 10f)
+        if (!behavior.isAttacking && behavior.isMoving)
         {
             entityMovement.enabled = true;
-            stateMachine.ChangeState(stateMachine.move);
+            stateMachine.ChangeState(((EFWStateMachine)stateMachine).move);
+        }
+        else if (behavior.isAttacking)
+        {
+            entityMovement.enabled = false;
+            stateMachine.ChangeState(((EFWStateMachine)stateMachine).attack);
         }
     }
-    
     public override void Exit()
     {
         

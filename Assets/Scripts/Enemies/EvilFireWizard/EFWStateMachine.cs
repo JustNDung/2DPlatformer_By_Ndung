@@ -18,5 +18,6 @@ public class EFWStateMachine : StateMachineBase
         idle = GetComponent<EFWIdle>();
         attack = GetComponent<EFWAttack>();
         move = GetComponent<EFWMove>();
+        
     }
 }

@@ -1,11 +1,11 @@
 
 public class Hurt : State
 {
-    private PlayerStateMachine stateMachine;
+    // private PlayerStateMachine stateMachine;
     public override void Enter()
     {
-        stateMachine = GetComponent<PlayerStateMachine>();
-        stateMachine.animator.SetBool("isHurted", true);
+        // stateMachine = GetComponent<PlayerStateMachine>();
+        ((PlayerStateMachine)stateMachine).animator.SetBool("isHurted", true);
     }
     public override void HandleInput()
     {
@@ -13,12 +13,12 @@ public class Hurt : State
     }
     public override void LogicUpdate()
     {
-        if (!stateMachine.playerController.isHurted) {
-            stateMachine.ChangeState(stateMachine.idle);
+        if (!((PlayerStateMachine)stateMachine).playerController.isHurted) {
+            stateMachine.ChangeState(((PlayerStateMachine)stateMachine).idle);
         }
     }
     public override void Exit()
     {
-        stateMachine.animator.SetBool("isHurted", false);
+        ((PlayerStateMachine)stateMachine).animator.SetBool("isHurted", false);
     }
 }

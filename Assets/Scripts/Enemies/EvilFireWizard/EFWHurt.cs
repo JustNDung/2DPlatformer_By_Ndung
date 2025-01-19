@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class EFWHurt : State
 {
-    private EFWStateMachine stateMachine;
+    // private EFWStateMachine stateMachine;
 
     public override void Enter()
     {
-        stateMachine = GetComponent<EFWStateMachine>();
-        stateMachine.anim.SetTrigger("Hurt");
+        // stateMachine = GetComponent<EFWStateMachine>();
+        ((EFWStateMachine)stateMachine).anim.SetTrigger("Hurt");
     }
 
     public override void HandleInput()

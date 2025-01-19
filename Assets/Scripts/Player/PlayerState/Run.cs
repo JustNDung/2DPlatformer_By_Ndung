@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class Run : State
 {
-    private PlayerStateMachine stateMachine;
+    // private PlayerStateMachine stateMachine;
     public override void Enter()
     {
-        stateMachine = GetComponent<PlayerStateMachine>();
-        stateMachine.animator.SetBool("isRunning", true);
+        // stateMachine = GetComponent<PlayerStateMachine>();
+        ((PlayerStateMachine)stateMachine).animator.SetBool("isRunning", true);
     }
 
     public override void HandleInput()
@@ -14,20 +14,20 @@ public class Run : State
         // Xử lý input khi đang trong trạng thái "Run"
         if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
         {
-            stateMachine.ChangeState(stateMachine.idle);
+            stateMachine.ChangeState(((PlayerStateMachine)stateMachine).idle);
         }
         else if (Input.GetKey(KeyCode.Space))
         {
-            stateMachine.ChangeState(stateMachine.jump);
+            stateMachine.ChangeState(((PlayerStateMachine)stateMachine).jump);
         }
         else if (Input.GetKey(KeyCode.LeftControl))
         {
-            stateMachine.ChangeState(stateMachine.slide);
+            stateMachine.ChangeState(((PlayerStateMachine)stateMachine).slide);
         }
         else if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)) 
                 && Input.GetKey(KeyCode.Mouse0))
         {
-            stateMachine.ChangeState(stateMachine.runShoot);
+            stateMachine.ChangeState(((PlayerStateMachine)stateMachine).runShoot);
         }
     }
 
@@ -38,7 +38,7 @@ public class Run : State
 
     public override void Exit()
     {
-        stateMachine.animator.SetBool("isRunning", false);  
+        ((PlayerStateMachine)stateMachine).animator.SetBool("isRunning", false);  
     }
 
 }

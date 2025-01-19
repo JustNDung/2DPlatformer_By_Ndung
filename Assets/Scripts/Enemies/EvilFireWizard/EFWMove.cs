@@ -2,15 +2,19 @@ using UnityEngine;
 
 public class EFWMove : State
 {
-    private EFWStateMachine stateMachine;
+    // private EFWStateMachine stateMachine;
     private EntityMovement entityMovement;
+    private EFWBehavior behavior;
     [SerializeField] private GameObject player; 
     public override void Enter()
     {
-        stateMachine = GetComponent<EFWStateMachine>();
+        // stateMachine = GetComponent<EFWStateMachine>();
         entityMovement = GetComponent<EntityMovement>();
+        behavior = GetComponent<EFWBehavior>();
         
-        stateMachine.anim.SetBool("isMoving", true);
+        ((EFWStateMachine)stateMachine).anim.SetBool("isMoving", true);
+        
+        Debug.Log("Move");
     }
 
     public override void HandleInput()
@@ -21,15 +25,19 @@ public class EFWMove : State
     public override void LogicUpdate()
     {
         entityMovement.UpdateDirection();
-        if (Mathf.Abs(transform.position.x - player.transform.position.x) > 10f)
+        if (!behavior.isAttacking && !behavior.isMoving)
         {
-            entityMovement.enabled = false;
-            stateMachine.ChangeState(stateMachine.idle);
+            stateMachine.ChangeState(((EFWStateMachine)stateMachine).idle);
+        }
+        else if (behavior.isAttacking)
+        {
+            stateMachine.ChangeState(((EFWStateMachine)stateMachine).attack);
         }
     }
 
     public override void Exit()
     {
-        stateMachine.anim.SetBool("isMoving", false);
+        entityMovement.enabled = false;
+        ((EFWStateMachine)stateMachine).anim.SetBool("isMoving", false);
     }
 }
