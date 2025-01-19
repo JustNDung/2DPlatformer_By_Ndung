@@ -14,13 +14,13 @@ TagManager:
   - Obstacle
   - Enemy
   - Player
-  - Bullet
+  - EnemyBullet
+  - PlayerBullet
   - Decorator
   - Ground
   - Background
   - Akainu
   - TriggerZone
-  - 
   - 
   - 
   - 
@@ -53,11 +53,11 @@ TagManager:
   - name: Decorator
     uniqueID: 124863671
     locked: 0
-  - name: Enemy
-    uniqueID: 2339833903
-    locked: 0
   - name: Player
     uniqueID: 1174052871
+    locked: 0
+  - name: Enemy
+    uniqueID: 2339833903
     locked: 0
   - name: Bullet
     uniqueID: 649850623

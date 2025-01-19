@@ -6,6 +6,7 @@ public class Run : State
     public override void Enter()
     {
         // stateMachine = GetComponent<PlayerStateMachine>();
+        Debug.Log("Enter Run");
         ((PlayerStateMachine)stateMachine).animator.SetBool("isRunning", true);
     }
 

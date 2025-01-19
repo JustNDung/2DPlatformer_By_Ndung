@@ -1,5 +1,4 @@
-using System.Runtime.InteropServices;
-using Unity.Mathematics;
+
 using UnityEngine;
 
 public class Jump : State
@@ -8,6 +7,7 @@ public class Jump : State
     public override void Enter()
     {
         // stateMachine = GetComponent<PlayerStateMachine>();
+        Debug.Log("Jump");
         ((PlayerStateMachine)stateMachine).animator.SetBool("isJumping", true);
     }
     public override void HandleInput()
