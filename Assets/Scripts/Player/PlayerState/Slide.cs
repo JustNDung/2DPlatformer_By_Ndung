@@ -2,18 +2,18 @@ using UnityEngine;
 
 public class Slide : State
 {
-    private PlayerStateMachine stateMachine;
+    // private PlayerStateMachine stateMachine;
     public override void Enter()
     {
-        stateMachine = GetComponent<PlayerStateMachine>();
-        stateMachine.animator.SetBool("isSliding", true);    
+        // stateMachine = GetComponent<PlayerStateMachine>();
+        ((PlayerStateMachine)stateMachine).animator.SetBool("isSliding", true);    
     }
 
     public override void HandleInput()
     {
         if (!Input.GetKey(KeyCode.LeftControl)) // Khi thả phím cúi
         {
-            stateMachine.ChangeState(stateMachine.idle);
+            stateMachine.ChangeState(((PlayerStateMachine)stateMachine).idle);
         }
     }
 
@@ -24,7 +24,7 @@ public class Slide : State
 
     public override void Exit()
     {
-        stateMachine.animator.SetBool("isSliding", false);
+        ((PlayerStateMachine)stateMachine).animator.SetBool("isSliding", false);
     }
 
 }

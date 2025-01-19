@@ -4,11 +4,11 @@ public class Shoot : State
 {
     [SerializeField] private BulletSpawner bulletSpawner;
     private Vector2 bulletDirection;
-    private PlayerStateMachine stateMachine;
+    // private PlayerStateMachine stateMachine;
     public override void Enter()
     {
-        stateMachine = GetComponent<PlayerStateMachine>();
-        stateMachine.animator.SetBool("isShooting", true);  
+        // stateMachine = GetComponent<PlayerStateMachine>();
+        ((PlayerStateMachine)stateMachine).animator.SetBool("isShooting", true);  
         Shooting(); 
     }
 
@@ -16,7 +16,7 @@ public class Shoot : State
     {
         if (!Input.GetKey(KeyCode.Mouse0)) // Khi người chơi thả phím bắn
         {
-            stateMachine.ChangeState(stateMachine.idle);
+            stateMachine.ChangeState(((PlayerStateMachine)stateMachine).idle);
         }
     }
 
@@ -27,12 +27,12 @@ public class Shoot : State
 
     public override void Exit()
     {
-        stateMachine.animator.SetBool("isShooting", false);
+        ((PlayerStateMachine)stateMachine).animator.SetBool("isShooting", false);
     }
 
     public void Shooting()
     {
-        if (stateMachine.playerController.transform.rotation.y == 0) {
+        if (((PlayerStateMachine)stateMachine).playerController.transform.rotation.y == 0) {
             bulletDirection = Vector2.right;
         } else {
             bulletDirection = Vector2.left;

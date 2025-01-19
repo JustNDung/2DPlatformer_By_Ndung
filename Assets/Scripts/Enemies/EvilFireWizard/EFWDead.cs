@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class EFWDead : State
 {
-    private EFWStateMachine stateMachine;
+    // private EFWStateMachine stateMachine;
     public override void Enter()
     {
-        stateMachine = GetComponent<EFWStateMachine>();
-        stateMachine.anim.SetTrigger("Dead");
+        // stateMachine = GetComponent<EFWStateMachine>();
+        ((EFWStateMachine)stateMachine).anim.SetTrigger("Dead");
     }
 
     public override void HandleInput()
