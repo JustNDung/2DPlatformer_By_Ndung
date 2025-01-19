@@ -13,8 +13,6 @@ public class EFWMove : State
         behavior = GetComponent<EFWBehavior>();
         
         ((EFWStateMachine)stateMachine).anim.SetBool("isMoving", true);
-        
-        Debug.Log("Move");
     }
 
     public override void HandleInput()

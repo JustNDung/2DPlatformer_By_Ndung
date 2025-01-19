@@ -15,7 +15,7 @@ public class Fireball : BulletBase
         isHit = true;
         IDamageable target = collision.gameObject.GetComponent<IDamageable>();
         
-        if (target != null)
+        if (target != null && collision.gameObject.CompareTag("Player"))
         {
             DealDamage(target); // Call TakeDamage on the target
         }
