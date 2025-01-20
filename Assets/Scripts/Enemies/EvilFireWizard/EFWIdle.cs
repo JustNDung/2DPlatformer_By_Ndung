@@ -13,7 +13,6 @@ public class EFWIdle : State
         entityMovement = GetComponent<EntityMovement>();
         behavior = GetComponent<EFWBehavior>();
         // entityMovement.enabled = false;
-        Debug.Log("Idle");
     }
 
     public override void HandleInput()

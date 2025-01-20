@@ -1,8 +1,8 @@
-using System;
+
 using UnityEngine;
 using System.Collections;
 
-public class Bat : EnemyBase
+public class BatBehavior : EnemyBase
 {
     private Transform target; // Người chơi bị phát hiện
 
@@ -16,7 +16,14 @@ public class Bat : EnemyBase
 
     [SerializeField] private Collider2D batCollider;
     [SerializeField] private Collider2D batTriggerCollider;
-    
+
+    private void Start()
+    {
+        maxHP = 10f;
+        currentHP = maxHP;
+        damageInterval = 0.5f;
+        isDead = false;
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
         IDamageable idamageable = other.GetComponent<IDamageable>();
@@ -25,7 +32,7 @@ public class Bat : EnemyBase
             target = other.transform;
         }
     }
-
+    
     private void OnCollisionEnter2D(Collision2D other)
     {
         IDamageable idamageable = other.gameObject.GetComponent<IDamageable>();

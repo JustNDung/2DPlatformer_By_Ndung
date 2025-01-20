@@ -59,8 +59,11 @@ TagManager:
   - name: Enemy
     uniqueID: 2339833903
     locked: 0
-  - name: Bullet
+  - name: PlayerBullet
     uniqueID: 649850623
+    locked: 0
+  - name: EnemyBullet
+    uniqueID: 1798689687
     locked: 0
   m_RenderingLayers:
   - Default
