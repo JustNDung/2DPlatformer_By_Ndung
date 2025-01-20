@@ -11,7 +11,9 @@ public class EFWBehavior : EnemyBase
     public override float DamageAmount => 4f;
     [SerializeField] private float attackCoolDown = 6f;
     [SerializeField] private float fireTime = 3f; // [ s]
-
+    [SerializeField] private float hurtAnimation; // [ s]
+    [SerializeField] private float deathAnimation;
+    
     [SerializeField] private Collider2D physicCollider;
     [SerializeField] private Collider2D attackCollider;
     [SerializeField] private Collider2D attackZoneCollider;
@@ -78,5 +80,52 @@ public class EFWBehavior : EnemyBase
     {
         isAttacking = false;
         isMoving = false;
+    }
+
+    public override void TakeDamage(float damage)
+    {
+        if (isDead) return; // No damage taken when already dead
+        
+        currentHP -= damage;
+
+        if (currentHP <= 0)
+        {
+            Death();
+        }
+        else
+        {
+            isHurt = true;
+            StartCoroutine(ResetHurtState());
+        }
+    }
+    
+    private IEnumerator ResetHurtState()
+    {
+        animator.SetTrigger("Hurt");
+        yield return new WaitForSeconds(hurtAnimation); // Thời gian chờ trước khi cho phép nhận sát thương lần nữa
+        isHurt = false;
+    }
+
+    public override void Death()
+    {
+        if (isDead) return; // Prevent multiple calls
+        animator.SetTrigger("Dead");
+        isDead = true;
+        
+        if (TryGetComponent<EntityMovement>(out var movement))
+        {
+            movement.enabled = false;
+        }
+
+        collider2D.isTrigger = true;
+        rb.linearVelocity = Vector2.zero; // Stop all movement
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        StartCoroutine(DeathAnimation());
+    }
+
+    private IEnumerator DeathAnimation()
+    {
+        yield return new WaitForSeconds(deathAnimation);
+        Destroy(gameObject);
     }
 }

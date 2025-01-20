@@ -3,7 +3,6 @@ using UnityEngine;
 public class EFWHurt : State
 {
     // private EFWStateMachine stateMachine;
-
     public override void Enter()
     {
         // stateMachine = GetComponent<EFWStateMachine>();
