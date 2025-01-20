@@ -13,10 +13,11 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable, IDeathable, IDamag
     
     protected float damageInterval;
     protected float maxHP;
-
     protected float currentHP;
-    protected bool isDead = false;
-    protected bool IsDead => isDead;
+    
+    public bool isDead = false;
+    public bool isHurt;
+    
     protected Coroutine damageCoroutine;
 
     protected virtual void Awake()
@@ -47,6 +48,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable, IDeathable, IDamag
     public virtual void TakeDamage(float damage)
     {
         if (isDead) return; // No damage taken when already dead
+        
         currentHP -= damage;
 
         if (currentHP <= 0)

@@ -23,6 +23,7 @@ public class EFWMove : State
     public override void LogicUpdate()
     {
         entityMovement.UpdateDirection();
+        // if (Vector3.Distance(player.transform.position, transform.position) < 1.5f)
         if (!behavior.isAttacking && !behavior.isMoving)
         {
             stateMachine.ChangeState(((EFWStateMachine)stateMachine).idle);
