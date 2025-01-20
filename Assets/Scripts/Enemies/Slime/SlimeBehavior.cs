@@ -28,7 +28,7 @@ public class SlimeBehavior : EnemyBase
             }
         }
     }
-
+    
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player") && damageCoroutine != null)
@@ -37,4 +37,5 @@ public class SlimeBehavior : EnemyBase
             damageCoroutine = null;
         }
     }
+    
 }

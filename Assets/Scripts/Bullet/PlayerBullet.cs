@@ -8,7 +8,7 @@ public class PlayerBullet : BulletBase
         rb.linearVelocity = Vector2.zero;
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.gravityScale = 0f;
-        collide.enabled = false;
+        // collide.enabled = false;
         // Trigger hit animation
         animator.SetTrigger("Hit");
         // if (isHit) return;

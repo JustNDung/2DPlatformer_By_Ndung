@@ -9,7 +9,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable, IDeathable, IDamag
     protected new Collider2D collider2D;
 
     /** Indicates how much damage the enemy deals **/
-    public virtual float DamageAmount => 3f;
+    public virtual float DamageAmount => 2f;
     
     protected float damageInterval;
     protected float maxHP;
