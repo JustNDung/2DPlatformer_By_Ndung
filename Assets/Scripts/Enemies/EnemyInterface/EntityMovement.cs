@@ -1,17 +1,20 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class EntityMovement : MonoBehaviour
 {
     [SerializeField] private float speed = 1f;
     [SerializeField] private float pauseDuration = 1.5f;
+    [SerializeField] private float castDistance = 0.75f;
     [SerializeField] private LayerMask obstacleLayer;
     [SerializeField] private GameObject player;
 
     private Rigidbody2D rb;
     public Vector2 direction;
     public bool isPaused = false;
+    private Coroutine pauseCoroutine;
     
     private void Start()
     {
@@ -36,9 +39,12 @@ public class EntityMovement : MonoBehaviour
             }
 
             // Perform a raycast to check for obstacles
-            if (Physics2D.Raycast(rb.position, direction, 0.75f, obstacleLayer))
+            if (Physics2D.Raycast(rb.position, direction, castDistance, obstacleLayer))
             {
-                StartCoroutine(ChangeDirectionAfterPause());
+                if (pauseCoroutine == null)
+                {
+                    pauseCoroutine = StartCoroutine(ChangeDirectionAfterPause());
+                }
             }
         }
     }
@@ -50,6 +56,8 @@ public class EntityMovement : MonoBehaviour
         yield return new WaitForSeconds(pauseDuration); // Wait for 1 second
         direction = -direction; // Reverse direction
         isPaused = false;
+
+        pauseCoroutine = null;
     }
 
     private void OnDisable()
