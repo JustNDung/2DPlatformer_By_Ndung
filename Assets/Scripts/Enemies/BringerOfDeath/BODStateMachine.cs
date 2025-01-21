@@ -12,6 +12,7 @@ public class BODStateMachine : StateMachineBase
     public BODDeath bodDeath;
     public BODHurt bodHurt;
     public BODWalk bodWalk;
+    public BODIdle bodIdle;
 
     private void Awake()
     {
@@ -24,5 +25,6 @@ public class BODStateMachine : StateMachineBase
         bodDeath = GetComponent<BODDeath>();
         bodHurt = GetComponent<BODHurt>();
         bodWalk = GetComponent<BODWalk>();
+        bodIdle = GetComponent<BODIdle>();
     }
 }

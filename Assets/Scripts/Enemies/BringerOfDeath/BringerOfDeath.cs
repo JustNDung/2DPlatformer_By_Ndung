@@ -1,16 +1,27 @@
 using UnityEngine;
 
-public class BringerOfDeath : MonoBehaviour
+public class BringerOfDeath : EnemyBase
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private BODStateMachine stateMachine;
+    private BODWalk initialStateWalk;
+
+
+    private void Start()
     {
-        
+        stateMachine = GetComponent<BODStateMachine>();
+        initialStateWalk = GetComponent<BODWalk>();
+        if (stateMachine == null)
+        {
+            Debug.LogError("No state machine found!");
+        }
+        stateMachine.ChangeState(initialStateWalk);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        stateMachine.StateUpdate();
     }
+    
+    
+    
 }
