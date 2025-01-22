@@ -145,7 +145,10 @@ public class PlayerController : MonoBehaviour, IDamageable, IDeathable
 
     public void TakeDamage(float damage) {
         currentHP -= damage;
-        Hurt();
+        if (damage > 0)
+        {
+            Hurt();
+        }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {

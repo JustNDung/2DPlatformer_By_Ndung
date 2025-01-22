@@ -3,9 +3,11 @@ using UnityEngine;
 public class BODIdle : State
 {
     private EntityMovement entityMovement;
+    private BringerOfDeath bringerOfDeath;
+    [SerializeField] private AttackCollider attackCollider;
     public override void Enter()
     {
-        Debug.Log("BOD Idle Enter");
+        bringerOfDeath = gameObject.GetComponent<BringerOfDeath>();
         entityMovement = GetComponent<EntityMovement>();
         ((BODStateMachine)stateMachine).animator.SetBool("isIdling", true);
     }
@@ -17,7 +19,11 @@ public class BODIdle : State
 
     public override void LogicUpdate()
     {
-        Debug.Log(entityMovement.isPaused);
+        if (attackCollider.target != null)
+        {
+            stateMachine.ChangeState(((BODStateMachine)stateMachine).bodAttack);
+        }
+        
         if (!entityMovement.isPaused)
         { 
             stateMachine.ChangeState(((BODStateMachine)stateMachine).bodWalk);

@@ -4,16 +4,20 @@ public class BringerOfDeath : EnemyBase
 {
     private BODStateMachine stateMachine;
     private BODWalk initialStateWalk;
+    
+    [SerializeField] private float attackDamage;
+    [SerializeField] private float castDamage;
+    [SerializeField] private AttackCollider _attackCollider;
 
+    public void BOFAttack()
+    {
+        _attackCollider.Attack();
+    }
 
     private void Start()
     {
         stateMachine = GetComponent<BODStateMachine>();
         initialStateWalk = GetComponent<BODWalk>();
-        if (stateMachine == null)
-        {
-            Debug.LogError("No state machine found!");
-        }
         stateMachine.ChangeState(initialStateWalk);
     }
 
@@ -21,7 +25,13 @@ public class BringerOfDeath : EnemyBase
     {
         stateMachine.StateUpdate();
     }
-    
-    
+
+    public override void DealDamage(IDamageable damageable)
+    {
+        if (damageable != null)
+        {
+            damageable.TakeDamage(attackDamage);
+        }
+    }
     
 }
