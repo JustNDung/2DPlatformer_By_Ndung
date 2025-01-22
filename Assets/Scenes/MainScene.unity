@@ -4925,7 +4925,7 @@ Transform:
   m_GameObject: {fileID: 1000379793}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.91, y: -1.8, z: 0}
+  m_LocalPosition: {x: 8.082742, y: 8.306244, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6898,7 +6898,7 @@ Transform:
   m_GameObject: {fileID: 1498897986}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.745451, y: -1.5, z: 0}
+  m_LocalPosition: {x: 4.724203, y: 8.466312, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7051,6 +7051,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackCollider: {fileID: 2004242109}
+  coolDownTime: 5
 --- !u!50 &1498898000
 Rigidbody2D:
   serializedVersion: 5
@@ -7714,6 +7715,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4279447608732977475, guid: 14e3eabba43966049b859a5e969981c2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4536368063320433553, guid: 14e3eabba43966049b859a5e969981c2, type: 3}
       propertyPath: player
       value: 
@@ -7830,8 +7835,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 1}
-  m_Size: {x: 12, y: 4}
+  m_Offset: {x: -2.5, y: 1}
+  m_Size: {x: 7, y: 4}
   m_Direction: 1
 --- !u!114 &2004242110
 MonoBehaviour:
