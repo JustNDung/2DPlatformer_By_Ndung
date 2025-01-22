@@ -8,10 +8,16 @@ public class BringerOfDeath : EnemyBase
     [SerializeField] private float attackDamage;
     [SerializeField] private float castDamage;
     [SerializeField] private AttackCollider _attackCollider;
+    [SerializeField] private CastCollider _castCollider;
 
     public void BOFAttack()
     {
         _attackCollider.Attack();
+    }
+
+    public void BOFCast()
+    {
+        _castCollider.Cast();
     }
 
     private void Start()
