@@ -1,11 +1,10 @@
-
 using UnityEngine;
 
-public class AttackCollider : HitBox
+public class CastCollider : HitBox
 {
     [SerializeField] private BringerOfDeath bringerOfDeath;
-    
-    public void Attack()
+
+    public void Cast()
     {
         bringerOfDeath.DealDamage(target);
     }
