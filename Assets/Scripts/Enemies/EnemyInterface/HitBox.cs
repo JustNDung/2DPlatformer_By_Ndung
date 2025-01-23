@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class HitBox : MonoBehaviour
+public abstract class HitBox : MonoBehaviour
 {
     public IDamageable target;
-
+    
     public void OnTriggerEnter2D(Collider2D collision)
     {
         IDamageable damageable = collision.GetComponent<IDamageable>();
