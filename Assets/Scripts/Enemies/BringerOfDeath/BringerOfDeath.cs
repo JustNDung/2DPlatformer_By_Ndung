@@ -13,13 +13,11 @@ public class BringerOfDeath : EnemyBase
     public void BOFAttack()
     {
         _attackCollider.Attack();
-        Debug.Log("Attacking");
     }
 
     public void BOFCast()
     {
         _castCollider.Cast();
-        Debug.Log("Casting");
     }
 
     private void Start()
