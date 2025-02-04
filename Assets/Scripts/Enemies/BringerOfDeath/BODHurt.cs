@@ -4,7 +4,7 @@ public class BODHurt : State
 {
     public override void Enter()
     {
-        
+        ((BODStateMachine)stateMachine).animator.SetTrigger("Hurt");
     }
     
     public override void Exit()

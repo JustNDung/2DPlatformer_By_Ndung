@@ -3,12 +3,10 @@ using UnityEngine;
 public class BODIdle : State
 {
     private EntityMovement entityMovement;
-    private BringerOfDeath bringerOfDeath;
     [SerializeField] private AttackCollider attackCollider;
     [SerializeField] private CastCollider castCollider;
     public override void Enter()
     {
-        bringerOfDeath = gameObject.GetComponent<BringerOfDeath>();
         entityMovement = GetComponent<EntityMovement>();
         ((BODStateMachine)stateMachine).animator.SetBool("isIdling", true);
     }
@@ -33,7 +31,6 @@ public class BODIdle : State
         if (!entityMovement.isPaused)
         { 
             stateMachine.ChangeState(((BODStateMachine)stateMachine).bodWalk);
-            entityMovement.enabled = true;
         }
     }
 

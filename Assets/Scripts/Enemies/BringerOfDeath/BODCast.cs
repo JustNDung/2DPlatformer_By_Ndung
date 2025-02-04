@@ -5,12 +5,10 @@ public class BODCast : State
 {
     [SerializeField] private float cooldownTime = 6f;
     [SerializeField] private Collider2D castCollider;
-    // [SerializeField] private SpellCollider spellCollider;
-    private EntityMovement entityMovement;
     public override void Enter()
     {
-        entityMovement = GetComponent<EntityMovement>();
         ((BODStateMachine)stateMachine).animator.SetBool("isCasting", true);
+        StartCoroutine(castCoolDown());
     }
     
     public override void Exit()
@@ -24,15 +22,13 @@ public class BODCast : State
             // Kiểm tra nếu animation "Attack" đã chạy xong
             if (spellInfo.IsName("Cast") && spellInfo.normalizedTime >= 1.0f)
             {
-                StartCoroutine(attackCoolDown());
+                stateMachine.ChangeState(((BODStateMachine)stateMachine).bodWalk);
             }
     }
 
-    private IEnumerator attackCoolDown()
+    private IEnumerator castCoolDown()
     {
         castCollider.enabled = false;
-        entityMovement.enabled = true;
-        stateMachine.ChangeState(((BODStateMachine)stateMachine).bodWalk);
         yield return new WaitForSeconds(cooldownTime);
         castCollider.enabled = true;
     }

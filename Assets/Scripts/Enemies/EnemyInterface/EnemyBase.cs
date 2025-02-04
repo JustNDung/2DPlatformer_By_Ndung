@@ -50,6 +50,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable, IDeathable, IDamag
         if (isDead) return; // No damage taken when already dead
         
         currentHP -= damage;
+        isHurt = true;
 
         if (currentHP <= 0)
         {
