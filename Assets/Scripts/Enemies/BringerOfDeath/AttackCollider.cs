@@ -7,6 +7,7 @@ public class AttackCollider : HitBox
     
     public void Attack()
     {
+        Debug.Log("DealDamage");
         bringerOfDeath.DealDamage(target);
     }
 }

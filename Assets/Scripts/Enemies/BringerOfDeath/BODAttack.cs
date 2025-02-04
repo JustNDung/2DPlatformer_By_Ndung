@@ -11,6 +11,7 @@ public class BODAttack : State
     {
         entityMovement = GetComponent<EntityMovement>();
         ((BODStateMachine)stateMachine).animator.SetBool("isAttacking", true);
+        StartCoroutine(attackCoolDown());
     }
     
     public override void Exit()
@@ -20,20 +21,19 @@ public class BODAttack : State
 
     public override void LogicUpdate()
     {
+        
         AnimatorStateInfo stateInfo = ((BODStateMachine)stateMachine).animator.GetCurrentAnimatorStateInfo(0);
 
         // Kiểm tra nếu animation "Attack" đã chạy xong
         if (stateInfo.IsName("Attack") && stateInfo.normalizedTime >= 1.0f)
         {
-            StartCoroutine(attackCoolDown());
+            stateMachine.ChangeState(((BODStateMachine)stateMachine).bodWalk);
         }
     }
 
     private IEnumerator attackCoolDown()
     {
         attackCollider.enabled = false;
-        entityMovement.enabled = true;
-        stateMachine.ChangeState(((BODStateMachine)stateMachine).bodWalk);
         yield return new WaitForSeconds(coolDownTime);
         attackCollider.enabled = true;
     }

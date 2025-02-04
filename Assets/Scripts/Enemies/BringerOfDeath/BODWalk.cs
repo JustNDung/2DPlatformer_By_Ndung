@@ -10,6 +10,8 @@ public class BODWalk : State
     {
         bringerOfDeath = GetComponent<BringerOfDeath>();
         entityMovement = GetComponent<EntityMovement>();
+
+        entityMovement.enabled = true;
     }
     
     public override void Exit()
