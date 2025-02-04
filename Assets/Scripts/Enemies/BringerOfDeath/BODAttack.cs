@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BODAttack : State
 {
-    [SerializeField] private Collider2D attackCollider;
+    [SerializeField] private GameObject attackHitBox;
     [SerializeField] private float coolDownTime = 5f;
     
     private EntityMovement entityMovement;
@@ -33,11 +33,18 @@ public class BODAttack : State
 
     private IEnumerator attackCoolDown()
     {
-        attackCollider.enabled = false;
+        AttackCollider attackCollider = attackHitBox.GetComponent<AttackCollider>();
+        if (attackCollider)
+        {
+            attackCollider.enabled = false;
+            Debug.Log(attackCollider.target);
+        }
         yield return new WaitForSeconds(coolDownTime);
-        attackCollider.enabled = true;
+        if (attackCollider)
+        {
+            attackCollider.enabled = true;
+        }
     }
-
     public override void HandleInput()
     {
         

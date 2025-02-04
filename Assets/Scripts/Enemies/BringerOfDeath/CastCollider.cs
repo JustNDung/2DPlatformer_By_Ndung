@@ -17,6 +17,11 @@ public class CastCollider : HitBox
         spellPool = new GenericObjectPool<SpellCollider>(spellCollider, spellAmount, null, duration);
     }
 
+    private void OnDisable()
+    {
+        target = null;
+    }
+
     public void Cast()
     {
         Spell();

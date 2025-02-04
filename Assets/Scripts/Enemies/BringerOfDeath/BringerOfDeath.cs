@@ -44,11 +44,13 @@ public class BringerOfDeath : EnemyBase
         
         stateMachine.ChangeState(stateMachine.bodWalk);
     }
+    
 
     public override void DealDamage(IDamageable damageable)
     {
         if (damageable != null)
         {
+            Debug.Log("Dealing Damage");
             damageable.TakeDamage(attackDamage);
         }
     }

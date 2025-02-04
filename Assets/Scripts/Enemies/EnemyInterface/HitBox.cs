@@ -4,7 +4,7 @@ public abstract class HitBox : MonoBehaviour
 {
     public IDamageable target;
     
-    public void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision) // Đổi từ `public` -> `private`
     {
         IDamageable damageable = collision.GetComponent<IDamageable>();
         if (damageable != null && collision.CompareTag("Player"))
@@ -21,5 +21,4 @@ public abstract class HitBox : MonoBehaviour
             target = null;
         }
     }
-    
 }
